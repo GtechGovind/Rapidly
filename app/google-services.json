@@ -1,0 +1,86 @@
+{
+  "project_info": {
+    "project_number": "311887034398",
+    "project_id": "parcelpro-c38cd",
+    "storage_bucket": "parcelpro-c38cd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:311887034398:android:620c1331e6a3040001960f",
+        "android_client_info": {
+          "package_name": "com.gtech.parcel"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJazbeDH70Kp1DYliw2E8E01GyMoisFFM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:311887034398:android:8a6e08319c7de16401960f",
+        "android_client_info": {
+          "package_name": "com.gtech.parcelpro"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJazbeDH70Kp1DYliw2E8E01GyMoisFFM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:311887034398:android:ba5d159593c4f5fa01960f",
+        "android_client_info": {
+          "package_name": "com.gtech.rapidly"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJazbeDH70Kp1DYliw2E8E01GyMoisFFM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:311887034398:android:378954196eeff3cb01960f",
+        "android_client_info": {
+          "package_name": "com.gtech.swiftdrop"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJazbeDH70Kp1DYliw2E8E01GyMoisFFM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
