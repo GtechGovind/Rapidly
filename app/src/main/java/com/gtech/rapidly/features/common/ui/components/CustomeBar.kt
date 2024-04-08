@@ -81,6 +81,42 @@ fun NavBar(
 }
 
 @Composable
+fun AdminNavBar(
+    modifier: Modifier,
+    title: String,
+    onLogOut: () -> Unit,
+) {
+    ElevatedCard(
+        modifier = modifier,
+        shape = MaterialTheme.shapes.small,
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(5.dp)
+        ) {
+            Text(
+                modifier = Modifier.align(Alignment.CenterStart)
+                    .padding(start = 16.dp),
+                text = title,
+                style = MaterialTheme.typography.titleMedium
+            )
+
+            IconButton(
+                onClick = onLogOut,
+                modifier = Modifier.align(Alignment.CenterEnd)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Person,
+                    contentDescription = "Log Out",
+                )
+            }
+
+        }
+    }
+}
+
+@Composable
 @Preview
 fun NavBarPreview() {
     WithTheme {
@@ -93,6 +129,20 @@ fun NavBarPreview() {
                 true
             },
             onProfile = {}
+        )
+    }
+}
+
+@Composable
+@Preview
+fun AdminNavBarPreview() {
+    WithTheme {
+        AdminNavBar(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            title = "Title",
+            onLogOut = {}
         )
     }
 }

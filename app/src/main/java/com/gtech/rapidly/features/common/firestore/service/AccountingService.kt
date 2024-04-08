@@ -1,5 +1,7 @@
 package com.gtech.rapidly.features.common.firestore.service
 
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FirebaseFirestore
 import com.gtech.rapidly.features.common.firestore.getByKey
 import com.gtech.rapidly.features.common.firestore.model.Accounting
 import com.gtech.rapidly.features.common.firestore.set
@@ -27,6 +29,12 @@ object AccountingService {
             error(e)
             return null
         }
+    }
+
+    fun getReportDf(): DocumentReference {
+        val db = FirebaseFirestore.getInstance()
+        return db.collection(COLLECTION_NAME)
+            .document(COLLECTION_VERSION)
     }
 
 }

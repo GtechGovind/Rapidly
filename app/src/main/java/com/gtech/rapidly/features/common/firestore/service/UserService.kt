@@ -1,9 +1,11 @@
 package com.gtech.rapidly.features.common.firestore.service
 
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.FirebaseFirestore
 import com.gtech.rapidly.features.common.firestore.getAll
 import com.gtech.rapidly.features.common.firestore.getByKey
-import com.gtech.rapidly.features.common.firestore.set
 import com.gtech.rapidly.features.common.firestore.model.User
+import com.gtech.rapidly.features.common.firestore.set
 import com.gtech.rapidly.utils.error
 
 object UserService {
@@ -17,6 +19,11 @@ object UserService {
             error(e)
             emptyList()
         }
+    }
+
+    fun getUsersDf(): CollectionReference {
+        val db = FirebaseFirestore.getInstance()
+        return db.collection(COLLECTION_NAME)
     }
 
     suspend fun saveOrUpdate(user: User): Boolean {

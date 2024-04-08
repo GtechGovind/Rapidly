@@ -76,10 +76,12 @@ class MainViewModel : ViewModel() {
             return
         }
 
-        if (BuildConfig.VERSION_NAME != setting.applicationVersion) {
-            showMessage("App version mismatch, please update the app!")
-            navigate(NavigationEvent.Login)
-            return
+        if (!BuildConfig.DEBUG) {
+            if (BuildConfig.VERSION_NAME != setting.applicationVersion) {
+                showMessage("App version mismatch, please update the app!")
+                navigate(NavigationEvent.Login)
+                return
+            }
         }
 
         showMessage("Welcome back, ${user.name}!")
