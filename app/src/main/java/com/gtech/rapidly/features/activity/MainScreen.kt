@@ -1,12 +1,20 @@
 package com.gtech.rapidly.features.activity
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
@@ -19,33 +27,60 @@ class MainScreen : Screen {
 
     @Composable
     override fun Content() {
-
         val navigator = LocalNavigator.currentOrThrow
-
-        val viewModel = viewModel<MainViewModel>()
-
-        SubscribeToLifecycle(viewModel)
-
-        when (viewModel.navigationEvent) {
-            is MainViewModel.NavigationEvent.Login -> navigator.replaceAll(LoginScreen)
-            is MainViewModel.NavigationEvent.AdminDashboard -> navigator.replaceAll(AdminDashboardScreen)
-            is MainViewModel.NavigationEvent.DeliveryDashboard -> navigator.replaceAll(DeliveryDashboardScreen)
-            else -> {}
+        val viewModel = rememberScreenModel {
+            MainViewModel(
+                goToLogin = {
+                    navigator.replaceAll(LoginScreen)
+                },
+                goToDeliveryDashboard = {
+                    navigator.replaceAll(DeliveryDashboardScreen)
+                },
+                goToAdminDashboard = {
+                    navigator.replaceAll(AdminDashboardScreen)
+                }
+            )
         }
-
-        View()
-
+        SubscribeToLifecycle(viewModel)
+        View(viewModel)
     }
 
     @Composable
-    private fun View() {
+    private fun View(
+        viewModel: MainViewModel
+    ) {
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
-            CircularProgressIndicator(
-                modifier = Modifier
-                    .align(Alignment.Center)
-            )
+            if (viewModel.errorMessage == null) {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                )
+            } else {
+                Column(
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        text = viewModel.errorMessage.toString(),
+                        textAlign = TextAlign.Center
+                    )
+                    Button(
+                        onClick = {
+                            viewModel.retry()
+                        }
+                    ) {
+                        Text(text = "Retry")
+                    }
+                }
+            }
         }
     }
 

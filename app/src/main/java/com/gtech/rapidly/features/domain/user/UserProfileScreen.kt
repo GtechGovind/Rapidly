@@ -22,7 +22,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
@@ -49,12 +49,14 @@ object UserProfileScreen : Screen {
     @Composable
     override fun Content() {
         navigator = LocalNavigator.currentOrThrow
-        val viewModel = viewModel<UserViewModel>()
-        SubscribeToLifecycle(viewModel)
-        when (viewModel.navigationEvent) {
-            is UserViewModel.NavigationEvent.Login -> navigator.replaceAll(LoginScreen)
-            else -> Unit
+        val viewModel = rememberScreenModel {
+            UserViewModel(
+                goToLogin = {
+                    navigator.replaceAll(LoginScreen)
+                }
+            )
         }
+        SubscribeToLifecycle(viewModel)
         View(viewModel)
     }
 
@@ -282,7 +284,9 @@ object UserProfileScreen : Screen {
 @Preview
 private fun Preview() {
     WithTheme {
-        UserProfileScreen.View(UserViewModel().apply {
+        UserProfileScreen.View(UserViewModel(
+            {}
+        ).apply {
             user = User(
                 name = "John Doe",
                 totalSalary = 0.0,

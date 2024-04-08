@@ -15,7 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
@@ -36,7 +36,9 @@ object OrderHistoryScreen : Screen {
     @Composable
     override fun Content() {
         navigator = LocalNavigator.currentOrThrow
-        val viewModel = viewModel<OrderHistoryViewModel>()
+        val viewModel = rememberScreenModel {
+            OrderHistoryViewModel()
+        }
         SubscribeToLifecycle(viewModel)
         View(viewModel)
     }

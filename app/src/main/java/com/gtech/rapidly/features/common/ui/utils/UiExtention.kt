@@ -10,7 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.core.lifecycle.LifecycleEffect
 import cafe.adriel.voyager.core.screen.Screen
-import com.gtech.rapidly.features.common.lifecycle.ViewModel
+import com.gtech.rapidly.features.common.lifecycle.ScreenModel
 import com.gtech.rapidly.features.common.ui.theme.RapidlyTheme
 
 @Composable
@@ -26,11 +26,10 @@ fun WithTheme(
 
 @Composable
 fun Screen.SubscribeToLifecycle(
-    viewModel: ViewModel
+    viewModel: ScreenModel
 ) {
     LifecycleEffect(
-        onStarted = { viewModel.init() },
-        onDisposed = { viewModel.destroy() }
+        onStarted = { viewModel.init() }
     )
 }
 

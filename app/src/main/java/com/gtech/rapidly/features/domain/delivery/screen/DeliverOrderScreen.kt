@@ -19,7 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
@@ -44,12 +44,15 @@ data class DeliverOrderScreen(
     @Composable
     override fun Content() {
         navigator = LocalNavigator.currentOrThrow
-        val viewModel: DeliverOrderViewModel = viewModel { DeliverOrderViewModel(order) }
-        SubscribeToLifecycle(viewModel)
-        when (viewModel.navigationEvent) {
-            is DeliverOrderViewModel.NavigationEvent.GoBack -> navigator.pop()
-            else -> Unit
+        val viewModel = rememberScreenModel {
+            DeliverOrderViewModel(
+                order = order,
+                goBack = {
+                    navigator.pop()
+                }
+            )
         }
+        SubscribeToLifecycle(viewModel)
         View(viewModel)
     }
 
@@ -135,6 +138,11 @@ private fun Preview() {
     WithTheme {
         DeliverOrderScreen(
             order = Order()
-        ).View(DeliverOrderViewModel(Order()))
+        ).View(
+            DeliverOrderViewModel(
+                Order(),
+                {}
+            )
+        )
     }
 }

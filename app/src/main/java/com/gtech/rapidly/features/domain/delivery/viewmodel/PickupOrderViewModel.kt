@@ -5,31 +5,29 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.lifecycle.viewModelScope
+import cafe.adriel.voyager.core.model.screenModelScope
 import com.google.firebase.Timestamp
 import com.gtech.rapidly.features.common.firestore.model.Order
 import com.gtech.rapidly.features.common.firestore.model.Restaurant
 import com.gtech.rapidly.features.common.firestore.service.OrderService
-import com.gtech.rapidly.features.common.lifecycle.ViewModel
+import com.gtech.rapidly.features.common.lifecycle.ScreenModel
 import com.gtech.rapidly.features.domain.delivery.service.ImageToTextService
 import com.gtech.rapidly.utils.misc.RuntimeCache
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
-class PickupOrderViewModel : ViewModel() {
+class PickupOrderViewModel(
+    private val onBack: () -> Unit
+) : ScreenModel() {
 
     var scannedOrder by mutableStateOf<Uri>(Uri.EMPTY)
     var restaurants: List<Restaurant> by mutableStateOf(emptyList())
     var selectedRestaurant by mutableStateOf(TextFieldValue())
     var billNumber by mutableStateOf(TextFieldValue())
-    var billNumberEnableStatus by mutableStateOf(false)
     var amount by mutableStateOf(TextFieldValue())
     var customerNumber by mutableStateOf(TextFieldValue())
-
-    var navigationEvent: NavigationEvent? by mutableStateOf(null)
-        private set
+    var scannedText by mutableStateOf("")
 
     override suspend fun onCreated() {
         super.onCreated()
@@ -40,31 +38,25 @@ class PickupOrderViewModel : ViewModel() {
 
     fun processImage(
         imageUri: Uri
-    ) = viewModelScope.launch(Dispatchers.Default) {
+    ) = screenModelScope.launch(Dispatchers.Default) {
         val result = ImageToTextService.processImage(imageUri)
         if (result.isNotBlank()) {
-            val hotelBill = ImageToTextService.parseHotelBill(result)
-            selectedRestaurant = TextFieldValue(hotelBill.restaurant?.name ?: "")
-            if (hotelBill.billNumber != null) {
-                billNumber = TextFieldValue(hotelBill.billNumber.toString())
-                billNumberEnableStatus = false
-            } else {
-                billNumberEnableStatus = true
-            }
-            amount = TextFieldValue(hotelBill.amount?.toString() ?: "")
+            scannedText = result
         } else {
             showMessage("Failed to process image, please try again")
         }
     }
 
-    fun processOrder() = viewModelScope.launch(
+    fun processOrder() = screenModelScope.launch(
         Dispatchers.Default
     ) {
         withLoading {
             val order = getOrderAndValidate() ?: return@withLoading
             if (OrderService.saveOrUpdate(order)) {
                 showMessage("Order added successfully.")
-                navigate(NavigationEvent.GoBack)
+                withContext(Dispatchers.Main) {
+                    onBack()
+                }
             } else {
                 showMessage("Failed to add order.")
             }
@@ -77,6 +69,11 @@ class PickupOrderViewModel : ViewModel() {
         val customerNumber = customerNumber.text
         val billNumber = billNumber.text
         val amount = amount.text
+
+        if (scannedText.isEmpty() || scannedOrder == Uri.EMPTY) {
+            showMessage("Please scan the hotel receipt!")
+            return null
+        }
 
         if (restaurantName.isEmpty()) {
             showMessage("Please select restaurant")
@@ -133,27 +130,11 @@ class PickupOrderViewModel : ViewModel() {
             pickupTime = System.currentTimeMillis(),
             customerNumber = customerNumber.toLong(),
             orderStatus = Order.Status.PICKUP,
+            scannedText = scannedText,
             createdAt = Timestamp.now(),
             updatedAt = Timestamp.now(),
         )
 
-    }
-
-    private suspend fun navigate(
-        newEvent: NavigationEvent?
-    ) = withContext(Dispatchers.Main) {
-        navigationEvent = newEvent
-    }
-
-    override fun onDestroy() {
-        runBlocking {
-            navigate(null)
-        }
-        super.onDestroy()
-    }
-
-    sealed class NavigationEvent {
-        data object GoBack : NavigationEvent()
     }
 
 }

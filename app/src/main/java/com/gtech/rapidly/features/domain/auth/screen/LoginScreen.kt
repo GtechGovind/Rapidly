@@ -29,7 +29,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
@@ -46,22 +46,15 @@ object LoginScreen: Screen {
 
     @Composable
     override fun Content() {
-
         val navigator = LocalNavigator.currentOrThrow
-
-        val viewModel = viewModel<LoginViewModel>()
-
-        SubscribeToLifecycle(viewModel)
-
-        when (viewModel.navigationEvent) {
-            is LoginViewModel.NavigationEvent.Register -> navigator.replaceAll(RegisterScreen)
-            is LoginViewModel.NavigationEvent.AdminDashboard -> navigator.replaceAll(AdminDashboardScreen)
-            is LoginViewModel.NavigationEvent.DeliveryDashboard -> navigator.replaceAll(DeliveryDashboardScreen)
-            else -> {}
+        val viewModel = rememberScreenModel {
+            LoginViewModel(
+                goToAdminDashboard = { navigator.replaceAll(AdminDashboardScreen) },
+                goToDeliveryDashboard = { navigator.replaceAll(DeliveryDashboardScreen) }
+            )
         }
-
+        SubscribeToLifecycle(viewModel)
         View(viewModel)
-
     }
 
     @Composable

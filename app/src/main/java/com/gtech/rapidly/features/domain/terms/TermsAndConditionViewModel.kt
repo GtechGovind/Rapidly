@@ -5,11 +5,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.gtech.rapidly.features.common.firestore.model.Legal
 import com.gtech.rapidly.features.common.firestore.service.LegalService
-import com.gtech.rapidly.features.common.lifecycle.ViewModel
+import com.gtech.rapidly.features.common.lifecycle.ScreenModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class TermsAndConditionViewModel : ViewModel() {
+class TermsAndConditionViewModel : ScreenModel() {
 
     var terms: List<Legal> by mutableStateOf(emptyList())
 

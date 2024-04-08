@@ -23,7 +23,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
@@ -45,7 +45,9 @@ object PendingOrderScreen : Screen {
     @Composable
     override fun Content() {
         navigator = LocalNavigator.currentOrThrow
-        val viewModel = viewModel<PendingOrderViewModel>()
+        val viewModel = rememberScreenModel {
+            PendingOrderViewModel()
+        }
         SubscribeToLifecycle(viewModel)
         View(viewModel)
     }

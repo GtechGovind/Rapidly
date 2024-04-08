@@ -4,17 +4,21 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.gtech.rapidly.features.common.firestore.model.Restaurant
-import com.gtech.rapidly.features.common.lifecycle.ViewModel
+import com.gtech.rapidly.features.common.lifecycle.ScreenModel
 import com.gtech.rapidly.utils.misc.RuntimeCache
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
-class DeliveryDashboardViewModel: ViewModel() {
+class DeliveryDashboardViewModel: ScreenModel() {
 
     var restaurants by mutableStateOf<List<Restaurant>>(emptyList())
 
     override suspend fun onCreated() {
         super.onCreated()
-        withLoading {
-            restaurants = RuntimeCache.getRestaurants()
+        withContext(Dispatchers.Default) {
+            withLoading {
+                restaurants = RuntimeCache.getRestaurants()
+            }
         }
     }
 

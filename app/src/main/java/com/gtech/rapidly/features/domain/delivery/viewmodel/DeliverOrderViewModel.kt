@@ -1,18 +1,15 @@
 package com.gtech.rapidly.features.domain.delivery.viewmodel
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.lifecycle.viewModelScope
+import cafe.adriel.voyager.core.model.screenModelScope
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.gtech.rapidly.features.common.firestore.model.Order
 import com.gtech.rapidly.features.common.firestore.service.AccountingService
 import com.gtech.rapidly.features.common.firestore.service.OrderService
 import com.gtech.rapidly.features.common.firestore.service.UserService
-import com.gtech.rapidly.features.common.lifecycle.ViewModel
-import com.gtech.rapidly.utils.misc.RuntimeCache
+import com.gtech.rapidly.features.common.lifecycle.ScreenModel
 import com.gtech.rapidly.utils.convert.round
+import com.gtech.rapidly.utils.misc.RuntimeCache
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -21,19 +18,20 @@ import kotlinx.coroutines.withContext
 
 
 class DeliverOrderViewModel(
-    private val order: Order
-) : ViewModel() {
+    private val order: Order,
+    private val goBack: () -> Unit
+) : ScreenModel() {
 
-    var navigationEvent: NavigationEvent? by mutableStateOf(null)
-
-    fun deliverOrder() = viewModelScope.launch(
+    fun deliverOrder() = screenModelScope.launch(
         Dispatchers.IO
     ) {
         withLoading {
             try {
                 if (processOrder()) {
                     showMessage("order delivered successfully")
-                    navigateBack()
+                    withContext(Dispatchers.Main) {
+                        goBack()
+                    }
                 }
             } catch (e: Exception) {
                 handleError(e)
@@ -89,14 +87,6 @@ class DeliverOrderViewModel(
 
         return true
 
-    }
-
-    private suspend fun navigateBack() = withContext(Dispatchers.Main) {
-        navigationEvent = NavigationEvent.GoBack
-    }
-
-    sealed class NavigationEvent {
-        data object GoBack : NavigationEvent()
     }
 
 }

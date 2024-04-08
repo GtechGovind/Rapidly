@@ -18,7 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
@@ -36,7 +36,9 @@ object TermsAndConditionScreen : Screen {
     @Composable
     override fun Content() {
         navigator = LocalNavigator.currentOrThrow
-        val viewModel = viewModel<TermsAndConditionViewModel>()
+        val viewModel = rememberScreenModel {
+            TermsAndConditionViewModel()
+        }
         SubscribeToLifecycle(viewModel)
         View(viewModel)
     }

@@ -1,8 +1,8 @@
 package com.gtech.rapidly.features.common.firestore.model
 
 import com.google.firebase.Timestamp
-import com.gtech.rapidly.utils.misc.GTime
 import com.gtech.rapidly.utils.convert.asciiToHex
+import com.gtech.rapidly.utils.misc.GTime
 import java.io.Serializable
 
 data class Order(
@@ -20,9 +20,10 @@ data class Order(
     val deliveryLocation: Long = 0,
     val customerNumber: Long = 0,
     var orderStatus: Status = Status.PICKUP,
+    var scannedText: String = "",
     val createdAt: Timestamp = Timestamp.now(),
     var updatedAt: Timestamp? = null
-): Serializable {
+) : Serializable {
     enum class Status { PICKUP, DELIVERED }
     companion object {
 
@@ -37,7 +38,14 @@ data class Order(
             billNumber: String,
             amount: Double
         ): String {
-            return asciiToHex("$billNumber$amount${GTime.toTime(System.currentTimeMillis(), "yyyyMMdd")}")
+            return asciiToHex(
+                "$billNumber$amount${
+                    GTime.toTime(
+                        System.currentTimeMillis(),
+                        "yyyyMMdd"
+                    )
+                }"
+            )
         }
 
         fun delayTime(pickupTime: Long): Int {

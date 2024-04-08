@@ -1,20 +1,17 @@
 package com.gtech.rapidly.features.domain.auth.viewmodel
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.lifecycle.viewModelScope
+import cafe.adriel.voyager.core.model.screenModelScope
 import com.gtech.rapidly.features.common.firestore.model.User
 import com.gtech.rapidly.features.common.firestore.service.UserService
-import com.gtech.rapidly.features.common.lifecycle.ViewModel
+import com.gtech.rapidly.features.common.lifecycle.ScreenModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class RegisterViewModel : ViewModel() {
-
-    var navigationEvent: NavigationEvent? by mutableStateOf(null)
-        private set
+class RegisterViewModel(
+    private val goToDeliveryDashboard: () -> Unit,
+    private val goToAdminDashboard: () -> Unit,
+) : ScreenModel() {
 
     fun processRegistration(
         fullName: String,
@@ -23,7 +20,7 @@ class RegisterViewModel : ViewModel() {
         vehicleNumber: String,
         phoneNumber: String,
         password: String
-    ) = viewModelScope.launch {
+    ) = screenModelScope.launch {
         withContext(Dispatchers.Default) {
 
             val user = getUserAndValidate(
@@ -40,13 +37,13 @@ class RegisterViewModel : ViewModel() {
                 return@withContext
             }
 
-            navigate(
+            withContext(Dispatchers.Main) {
                 if (user.userType == User.UserType.DELIVERY_BOY) {
-                    NavigationEvent.DeliveryDashboard
+                    goToDeliveryDashboard()
                 } else {
-                    NavigationEvent.AdminDashboard
+                    goToAdminDashboard()
                 }
-            )
+            }
 
         }
     }
@@ -133,17 +130,6 @@ class RegisterViewModel : ViewModel() {
 
         return user
 
-    }
-
-    private suspend fun navigate(
-        newNavigationEvent: NavigationEvent
-    ) = withContext(Dispatchers.Main) {
-        navigationEvent = newNavigationEvent
-    }
-
-    sealed class NavigationEvent {
-        data object DeliveryDashboard : NavigationEvent()
-        data object AdminDashboard : NavigationEvent()
     }
 
 }

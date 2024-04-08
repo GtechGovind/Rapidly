@@ -27,7 +27,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
@@ -49,7 +49,9 @@ object AdminDashboardScreen : Screen {
     @Composable
     override fun Content() {
         navigator = LocalNavigator.currentOrThrow
-        val viewModel = viewModel<AdminDashboardViewModel>()
+        val viewModel = rememberScreenModel {
+            AdminDashboardViewModel()
+        }
         SubscribeToLifecycle(viewModel)
         View(viewModel)
     }
@@ -113,7 +115,6 @@ object AdminDashboardScreen : Screen {
 
             Row(
                 modifier = Modifier
-                    .fillMaxWidth()
                     .fillMaxWidth()
                     .padding(16.dp)
 
@@ -188,11 +189,13 @@ object AdminDashboardScreen : Screen {
             modifier = modifier,
         ) {
             LazyColumn(
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp)
             ) {
                 items(viewModel.users) {
                     UserCard(
-                        modifier = Modifier.padding(16.dp),
+                        modifier = Modifier,
                         user = it,
                         toggleUserStatus = { user ->
                             if (!viewModel.isLoading) {
@@ -200,6 +203,7 @@ object AdminDashboardScreen : Screen {
                             }
                         }
                     )
+                    Spacer(modifier = Modifier.padding(8.dp))
                 }
             }
         }

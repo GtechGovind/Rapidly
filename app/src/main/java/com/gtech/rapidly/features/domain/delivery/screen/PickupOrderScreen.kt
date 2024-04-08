@@ -52,7 +52,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
@@ -78,10 +78,12 @@ object PickupOrderScreen : Screen {
     @Composable
     override fun Content() {
         navigator = LocalNavigator.currentOrThrow
-        val viewModel = viewModel<PickupOrderViewModel>()
-        when (viewModel.navigationEvent) {
-            is PickupOrderViewModel.NavigationEvent.GoBack -> navigator.pop()
-            else -> {}
+        val viewModel = rememberScreenModel {
+            PickupOrderViewModel(
+                onBack = {
+                    navigator.pop()
+                }
+            )
         }
         SubscribeToLifecycle(viewModel)
         View(viewModel)
@@ -282,7 +284,7 @@ object PickupOrderScreen : Screen {
                 modifier = Modifier.fillMaxWidth(),
                 value = viewModel.billNumber,
                 onValueChange = { viewModel.billNumber = it },
-                enabled = viewModel.billNumberEnableStatus,
+                enabled = !viewModel.isLoading,
                 label = { Text("Bill Number") },
                 leadingIcon = {
                     Icon(
@@ -302,7 +304,7 @@ object PickupOrderScreen : Screen {
                 modifier = Modifier.fillMaxWidth(),
                 value = viewModel.amount,
                 onValueChange = { viewModel.amount = it },
-                enabled = false,
+                enabled = !viewModel.isLoading,
                 label = { Text("Order Amount") },
                 leadingIcon = {
                     Icon(
@@ -392,7 +394,11 @@ object PickupOrderScreen : Screen {
 private fun Preview() {
     WithTheme {
         PickupOrderScreen.View(
-            viewModel = PickupOrderViewModel()
+            viewModel = PickupOrderViewModel(
+                onBack = {
+
+                }
+            )
         )
     }
 }

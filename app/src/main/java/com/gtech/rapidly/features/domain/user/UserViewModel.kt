@@ -3,20 +3,20 @@ package com.gtech.rapidly.features.domain.user
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.viewModelScope
+import cafe.adriel.voyager.core.model.screenModelScope
 import com.gtech.rapidly.features.common.firestore.model.User
 import com.gtech.rapidly.features.common.firestore.service.UserService
-import com.gtech.rapidly.features.common.lifecycle.ViewModel
+import com.gtech.rapidly.features.common.lifecycle.ScreenModel
 import com.gtech.rapidly.utils.misc.RuntimeCache
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class UserViewModel : ViewModel() {
+class UserViewModel(
+    private val goToLogin: () -> Unit
+) : ScreenModel() {
 
     var user by mutableStateOf<User?>(null)
-    var navigationEvent: NavigationEvent? by mutableStateOf(null)
-        private set
 
     override suspend fun onCreated() {
         super.onCreated()
@@ -31,21 +31,13 @@ class UserViewModel : ViewModel() {
         }
     }
 
-    fun logout() = viewModelScope.launch {
+    fun logout() = screenModelScope.launch {
         withContext(Dispatchers.Default) {
             destroyUserSession()
-            navigate(NavigationEvent.Login)
+            withContext(Dispatchers.Main) {
+                goToLogin()
+            }
         }
-    }
-
-    private suspend fun navigate(
-        event: NavigationEvent
-    ) = withContext(Dispatchers.Main) {
-        navigationEvent = event
-    }
-
-    sealed class NavigationEvent {
-        data object Login : NavigationEvent()
     }
 
 }

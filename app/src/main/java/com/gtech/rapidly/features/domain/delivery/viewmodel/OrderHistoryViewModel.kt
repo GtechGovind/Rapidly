@@ -5,12 +5,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.gtech.rapidly.features.common.firestore.model.Order
 import com.gtech.rapidly.features.common.firestore.service.OrderService
-import com.gtech.rapidly.features.common.lifecycle.ViewModel
+import com.gtech.rapidly.features.common.lifecycle.ScreenModel
 import com.gtech.rapidly.utils.misc.RuntimeCache
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class OrderHistoryViewModel: ViewModel() {
+class OrderHistoryViewModel: ScreenModel() {
 
     var orderHistory by mutableStateOf<List<Order>>(emptyList())
 

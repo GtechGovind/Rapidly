@@ -4,38 +4,37 @@ import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.viewModelScope
+import cafe.adriel.voyager.core.model.screenModelScope
 import com.gtech.rapidly.app.RapidlyApp
 import com.gtech.rapidly.features.common.firestore.model.User
+import com.gtech.rapidly.utils.error
+import com.gtech.rapidly.utils.info
 import com.gtech.rapidly.utils.misc.GResource
 import com.gtech.rapidly.utils.misc.RuntimeCache
-import com.gtech.rapidly.utils.error
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.CoroutineContext
 
-typealias AndroidViewModel = androidx.lifecycle.ViewModel
-
-abstract class ViewModel : AndroidViewModel() {
+typealias VoyagerScreenMode = cafe.adriel.voyager.core.model.ScreenModel
+abstract class ScreenModel : VoyagerScreenMode {
 
     var isLoading by mutableStateOf(false)
         protected set
 
-    fun init() = viewModelScope.launch { onCreated() }
-    fun destroy() = onCleared()
+    fun init() = screenModelScope.launch { onCreated() }
 
     open suspend fun onCreated() {
-
+        info("Lifecycle: Created")
     }
 
     open fun onDestroy() {
-
+        info("Lifecycle: Destroy")
     }
 
-    override fun onCleared() {
+    override fun onDispose() {
         onDestroy()
-        super.onCleared()
+        super.onDispose()
     }
 
     suspend fun withLoading(
