@@ -15,6 +15,7 @@ import com.gtech.rapidly.features.domain.delivery.service.ImageToTextService
 import com.gtech.rapidly.utils.misc.RuntimeCache
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
 class PickupOrderViewModel : ViewModel() {
@@ -139,9 +140,16 @@ class PickupOrderViewModel : ViewModel() {
     }
 
     private suspend fun navigate(
-        newEvent: NavigationEvent
+        newEvent: NavigationEvent?
     ) = withContext(Dispatchers.Main) {
         navigationEvent = newEvent
+    }
+
+    override fun onDestroy() {
+        runBlocking {
+            navigate(null)
+        }
+        super.onDestroy()
     }
 
     sealed class NavigationEvent {
