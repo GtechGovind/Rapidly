@@ -1,6 +1,7 @@
 package com.gtech.rapidly.features.common.firestore.service
 
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.gtech.rapidly.features.common.firestore.getAll
 import com.gtech.rapidly.features.common.firestore.getByKey
 import com.gtech.rapidly.features.common.firestore.model.Order
@@ -66,6 +67,7 @@ object OrderService {
             .collection(COLLECTION_NAME)
             .whereEqualTo("orderStatus", status)
             .whereEqualTo("deliveryBoyNumber", deliverBoyNumber)
+            .orderBy("createdAt", Query.Direction.DESCENDING)
             .limit(limit)
             .get()
             .await()

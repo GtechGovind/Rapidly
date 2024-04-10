@@ -246,7 +246,7 @@ fun OrderHistoryItem(
                     )
                     Spacer(modifier = Modifier.padding(2.dp))
                     Text(
-                        text = GTime.diffInMinute(order.pickupTime, order.deliveryTime).toString() + " Min",
+                        text = GTime.diffInMinute(order.deliveryTime, order.pickupTime).toString() + " Min",
                         style = MaterialTheme.typography.bodyMedium
                     )
                     Spacer(modifier = Modifier.padding(2.dp))
