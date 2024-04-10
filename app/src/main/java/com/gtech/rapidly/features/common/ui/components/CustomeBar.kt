@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.gtech.rapidly.features.common.ui.utils.WithTheme
 
+@Deprecated("Use DeliveryNavBar instead")
 @Composable
 fun NavBar(
     modifier: Modifier,

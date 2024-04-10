@@ -62,12 +62,10 @@ import com.google.mlkit.vision.documentscanner.GmsDocumentScanningResult
 import com.gtech.rapidly.R
 import com.gtech.rapidly.features.activity.MainActivity
 import com.gtech.rapidly.features.common.ui.components.LoadingButton
-import com.gtech.rapidly.features.common.ui.components.NavBar
 import com.gtech.rapidly.features.common.ui.utils.SubscribeToLifecycle
 import com.gtech.rapidly.features.common.ui.utils.WithTheme
 import com.gtech.rapidly.features.domain.delivery.service.ImageToTextService
 import com.gtech.rapidly.features.domain.delivery.viewmodel.PickupOrderViewModel
-import com.gtech.rapidly.features.domain.user.UserProfileScreen
 
 object PickupOrderScreen : Screen {
 
@@ -99,19 +97,6 @@ object PickupOrderScreen : Screen {
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
         ) {
-
-            NavBar(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                title = "PICKUP ORDER",
-                onBack = {
-                    navigator.pop()
-                },
-                onProfile = {
-                    navigator.push(UserProfileScreen)
-                }
-            )
 
             OrderScannerView(
                 modifier = Modifier

@@ -34,10 +34,11 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.gtech.rapidly.R
 import com.gtech.rapidly.features.common.firestore.model.User
 import com.gtech.rapidly.features.common.ui.components.LoadingButton
-import com.gtech.rapidly.features.common.ui.components.NavBar
 import com.gtech.rapidly.features.common.ui.utils.SubscribeToLifecycle
 import com.gtech.rapidly.features.common.ui.utils.WithTheme
 import com.gtech.rapidly.features.domain.auth.screen.LoginScreen
+import com.gtech.rapidly.features.domain.delivery.screen.FundWithdrawScreen
+import com.gtech.rapidly.features.domain.delivery.viewmodel.MainDeliveryViewModel
 import com.gtech.rapidly.features.domain.terms.TermsAndConditionScreen
 import com.gtech.rapidly.utils.convert.round
 
@@ -65,34 +66,24 @@ object UserProfileScreen : Screen {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState())
         ) {
 
             val composition by rememberLottieComposition(
                 spec = LottieCompositionSpec.RawRes(R.raw.profile)
             )
 
-            NavBar(modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-                title = "Profile",
-                onBack = {
-                    navigator.pop()
-                    false
-                }
-            )
-
             LottieAnimation(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(150.dp)
+                    .height(200.dp)
                     .padding(horizontal = 16.dp),
                 composition = composition,
                 iterations = LottieConstants.IterateForever
             )
 
             ProfileView(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize(),
                 viewModel = viewModel,
             )
 
@@ -112,11 +103,12 @@ object UserProfileScreen : Screen {
                 modifier = Modifier
                     .padding(16.dp)
                     .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
             ) {
 
                 Text(
                     modifier = Modifier.padding(bottom = 8.dp),
-                    text = viewModel.user?.name ?: "Loading...",
+                    text = viewModel.user?.name?.uppercase() ?: "Loading...",
                     style = MaterialTheme.typography.displaySmall
                 )
 
@@ -264,7 +256,17 @@ object UserProfileScreen : Screen {
 
                 LoadingButton(
                     modifier = Modifier
-                        .padding(vertical = 32.dp)
+                        .padding(top = 32.dp)
+                        .fillMaxWidth(),
+                    isLoading = viewModel.isLoading,
+                    text = "Withdraw Funds",
+                ) {
+                    navigator.push(FundWithdrawScreen)
+                }
+
+                LoadingButton(
+                    modifier = Modifier
+                        .padding(vertical = 16.dp)
                         .fillMaxWidth(),
                     isLoading = viewModel.isLoading,
                     text = "Logout",
@@ -284,11 +286,9 @@ object UserProfileScreen : Screen {
 @Preview
 private fun Preview() {
     WithTheme {
-        UserProfileScreen.View(UserViewModel(
-            {}
-        ).apply {
+        UserProfileScreen.View(UserViewModel {}.apply {
             user = User(
-                name = "John Doe",
+                name = "Govind Yadav",
                 totalSalary = 0.0,
                 totalPenalties = 100.0,
                 totalWithdrawal = 500.0,

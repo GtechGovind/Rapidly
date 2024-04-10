@@ -53,19 +53,6 @@ object OrderHistoryScreen : Screen {
                 .fillMaxSize()
         ) {
 
-            NavBar(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                title = "ORDER HISTORY",
-                onBack = {
-                    navigator.pop()
-                },
-                onProfile = {
-                    navigator.push(UserProfileScreen)
-                }
-            )
-
             if (viewModel.isLoading) {
                 Box(modifier = Modifier.fillMaxSize()) {
                     CircularProgressIndicator(

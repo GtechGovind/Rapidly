@@ -1,14 +1,23 @@
 package com.gtech.rapidly.utils.misc
 
+import com.google.firebase.Timestamp
 import java.text.SimpleDateFormat
 import java.util.Locale
+import java.util.TimeZone
 import java.util.concurrent.TimeUnit
 
 object GTime {
 
     fun toTime(epochTime: Long, format: String): String {
         val dateFormat = SimpleDateFormat(format, Locale.ENGLISH)
+        dateFormat.timeZone = TimeZone.getTimeZone("Asia/Kolkata")
         return dateFormat.format(epochTime)
+    }
+
+    fun Timestamp.toTime(format: String): String {
+        val dateFormat = SimpleDateFormat(format, Locale.ENGLISH)
+        dateFormat.timeZone = TimeZone.getTimeZone("Asia/Kolkata")
+        return dateFormat.format(this.toDate())
     }
 
     fun getDiffInMinute(timeToCalDiff: Long): Int {

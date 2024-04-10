@@ -20,6 +20,7 @@ gson = "2.10.1"
 firebaseFirestore = "24.11.0"
 signaturePad = "0.1.2"
 lottieCompose = "6.4.0"
+dexter = "6.2.3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -46,6 +47,7 @@ play-services-mlkit-document-scanner = { group = "com.google.android.gms", name 
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 signature-pad = { group = "se.warting.signature", name = "signature-pad", version.ref = "signaturePad" }
 lottie-compose = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottieCompose" }
+dexter = { group = "com.karumi", name = "dexter", version.ref = "dexter" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

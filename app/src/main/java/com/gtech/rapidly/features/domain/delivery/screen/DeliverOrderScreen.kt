@@ -27,11 +27,9 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import com.gtech.rapidly.R
 import com.gtech.rapidly.features.common.firestore.model.Order
 import com.gtech.rapidly.features.common.ui.components.LoadingButton
-import com.gtech.rapidly.features.common.ui.components.NavBar
 import com.gtech.rapidly.features.common.ui.utils.SubscribeToLifecycle
 import com.gtech.rapidly.features.common.ui.utils.WithTheme
 import com.gtech.rapidly.features.domain.delivery.viewmodel.DeliverOrderViewModel
-import com.gtech.rapidly.features.domain.user.UserProfileScreen
 import se.warting.signaturepad.SignaturePadAdapter
 import se.warting.signaturepad.SignaturePadView
 
@@ -67,19 +65,6 @@ data class DeliverOrderScreen(
         ) {
 
             var signatureAdapter: SignaturePadAdapter? = null
-
-            NavBar(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                title = "PENDING ORDER",
-                onBack = {
-                    navigator.pop()
-                },
-                onProfile = {
-                    navigator.push(UserProfileScreen)
-                }
-            )
 
             OutlinedCard(
                 modifier = Modifier

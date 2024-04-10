@@ -8,7 +8,6 @@ import cafe.adriel.voyager.core.model.screenModelScope
 import com.gtech.rapidly.app.RapidlyApp
 import com.gtech.rapidly.features.common.firestore.model.User
 import com.gtech.rapidly.utils.error
-import com.gtech.rapidly.utils.info
 import com.gtech.rapidly.utils.misc.GResource
 import com.gtech.rapidly.utils.misc.RuntimeCache
 import kotlinx.coroutines.Dispatchers
@@ -24,13 +23,9 @@ abstract class ScreenModel : VoyagerScreenMode {
 
     fun init() = screenModelScope.launch { onCreated() }
 
-    open suspend fun onCreated() {
-        info("Lifecycle: Created")
-    }
+    open suspend fun onCreated() {}
 
-    open fun onDestroy() {
-        info("Lifecycle: Destroy")
-    }
+    open fun onDestroy() {}
 
     override fun onDispose() {
         onDestroy()

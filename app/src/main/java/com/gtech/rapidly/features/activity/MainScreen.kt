@@ -22,6 +22,7 @@ import com.gtech.rapidly.features.common.ui.utils.SubscribeToLifecycle
 import com.gtech.rapidly.features.domain.admin.screen.AdminDashboardScreen
 import com.gtech.rapidly.features.domain.auth.screen.LoginScreen
 import com.gtech.rapidly.features.domain.delivery.screen.DeliveryDashboardScreen
+import com.gtech.rapidly.features.domain.delivery.screen.MainDeliveryScreen
 
 class MainScreen : Screen {
 
@@ -34,7 +35,7 @@ class MainScreen : Screen {
                     navigator.replaceAll(LoginScreen)
                 },
                 goToDeliveryDashboard = {
-                    navigator.replaceAll(DeliveryDashboardScreen)
+                    navigator.replaceAll(MainDeliveryScreen)
                 },
                 goToAdminDashboard = {
                     navigator.replaceAll(AdminDashboardScreen)

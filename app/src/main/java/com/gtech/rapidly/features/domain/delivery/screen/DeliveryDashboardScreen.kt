@@ -36,11 +36,9 @@ import com.gtech.rapidly.R
 import com.gtech.rapidly.app.RapidlyApp
 import com.gtech.rapidly.features.common.firestore.model.Restaurant
 import com.gtech.rapidly.features.common.ui.components.ImageFromUrl
-import com.gtech.rapidly.features.common.ui.components.NavBar
 import com.gtech.rapidly.features.common.ui.utils.SubscribeToLifecycle
 import com.gtech.rapidly.features.common.ui.utils.WithTheme
 import com.gtech.rapidly.features.domain.delivery.viewmodel.DeliveryDashboardViewModel
-import com.gtech.rapidly.features.domain.user.UserProfileScreen
 
 object DeliveryDashboardScreen : Screen {
 
@@ -65,16 +63,6 @@ object DeliveryDashboardScreen : Screen {
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
-
-            NavBar(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                title = "DASHBOARD",
-                onProfile = {
-                    navigator.push(UserProfileScreen)
-                }
-            )
 
             PartnerView(
                 modifier = Modifier

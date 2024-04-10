@@ -15,8 +15,8 @@ android {
         applicationId = "com.gtech.rapidly"
         minSdk = 24
         targetSdk = 34
-        versionCode = 7
-        versionName = "2024.1.1.7"
+        versionCode = 8
+        versionName = "2024.1.1.8"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -73,6 +73,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.dexter)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

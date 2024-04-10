@@ -43,6 +43,7 @@ import com.gtech.rapidly.features.common.ui.utils.WithTheme
 import com.gtech.rapidly.features.domain.admin.screen.AdminDashboardScreen
 import com.gtech.rapidly.features.domain.auth.viewmodel.RegisterViewModel
 import com.gtech.rapidly.features.domain.delivery.screen.DeliveryDashboardScreen
+import com.gtech.rapidly.features.domain.delivery.screen.MainDeliveryScreen
 
 object RegisterScreen : Screen {
 
@@ -55,7 +56,7 @@ object RegisterScreen : Screen {
         val viewModel = rememberScreenModel {
             RegisterViewModel(
                 goToDeliveryDashboard = {
-                    navigator.replaceAll(DeliveryDashboardScreen)
+                    navigator.replaceAll(MainDeliveryScreen)
                 },
                 goToAdminDashboard = {
                     navigator.replaceAll(AdminDashboardScreen)

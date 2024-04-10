@@ -62,19 +62,6 @@ object PendingOrderScreen : Screen {
                 .fillMaxSize()
         ) {
 
-            NavBar(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                title = "PENDING ORDER",
-                onBack = {
-                    navigator.pop()
-                },
-                onProfile = {
-                    navigator.push(UserProfileScreen)
-                }
-            )
-
             if (viewModel.isLoading) {
                 Box(modifier = Modifier.fillMaxSize()) {
                     CircularProgressIndicator(

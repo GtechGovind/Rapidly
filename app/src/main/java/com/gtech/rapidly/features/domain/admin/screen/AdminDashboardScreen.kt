@@ -274,6 +274,7 @@ object AdminDashboardScreen : Screen {
 @Preview
 fun AdminDashboardScreenPreview() {
     WithTheme {
-        AdminDashboardScreen.View(AdminDashboardViewModel())
+        AdminDashboardScreen
+            .View(AdminDashboardViewModel())
     }
 }

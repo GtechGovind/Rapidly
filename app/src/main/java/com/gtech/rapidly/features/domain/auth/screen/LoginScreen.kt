@@ -38,6 +38,7 @@ import com.gtech.rapidly.features.common.ui.utils.SubscribeToLifecycle
 import com.gtech.rapidly.features.domain.admin.screen.AdminDashboardScreen
 import com.gtech.rapidly.features.domain.auth.viewmodel.LoginViewModel
 import com.gtech.rapidly.features.domain.delivery.screen.DeliveryDashboardScreen
+import com.gtech.rapidly.features.domain.delivery.screen.MainDeliveryScreen
 import com.gtech.rapidly.features.domain.terms.TermsAndConditionScreen
 
 object LoginScreen: Screen {
@@ -50,7 +51,7 @@ object LoginScreen: Screen {
         val viewModel = rememberScreenModel {
             LoginViewModel(
                 goToAdminDashboard = { navigator.replaceAll(AdminDashboardScreen) },
-                goToDeliveryDashboard = { navigator.replaceAll(DeliveryDashboardScreen) }
+                goToDeliveryDashboard = { navigator.replaceAll(MainDeliveryScreen) }
             )
         }
         SubscribeToLifecycle(viewModel)
