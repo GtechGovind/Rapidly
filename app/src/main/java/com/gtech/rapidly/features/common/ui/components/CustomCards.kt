@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -35,9 +36,11 @@ import androidx.compose.ui.unit.dp
 import com.google.firebase.Timestamp
 import com.gtech.rapidly.R
 import com.gtech.rapidly.features.common.firestore.model.Order
+import com.gtech.rapidly.features.common.firestore.model.User
 import com.gtech.rapidly.features.common.firestore.model.Withdraw
 import com.gtech.rapidly.features.common.ui.theme.RapidlyTheme
 import com.gtech.rapidly.features.common.ui.utils.WithTheme
+import com.gtech.rapidly.utils.convert.round
 import com.gtech.rapidly.utils.misc.GTime
 import com.gtech.rapidly.utils.misc.GTime.toTime
 
@@ -348,7 +351,7 @@ fun WithdrawItem(
                         .fillMaxWidth()
                         .padding(16.dp)
                 ) {
-                    if (item.approvedBy != 0L) {
+                    if (item.attendedBy != 0L) {
                         Text(
                             text = "₹ ${item.approvedAmount} | ${item.status.name}",
                             style = MaterialTheme.typography.bodyMedium,
@@ -362,7 +365,7 @@ fun WithdrawItem(
                         )
                         Spacer(modifier = Modifier.padding(2.dp))
                         Text(
-                            text = item.approvedNote,
+                            text = item.attendeeNote,
                             style = MaterialTheme.typography.bodyMedium,
                             fontStyle = FontStyle.Italic
                         )
@@ -397,8 +400,8 @@ private fun WithdrawItemPreview() {
             item = Withdraw(
                 requestAmount = 100.0,
                 requestNote = "Test",
-                approvedBy = 2345678,
-                approvedNote = "tfygujdsbchdhsbcuhdvcgvdsuchugdvcgvds",
+                attendedBy = 2345678,
+                attendeeNote = "tfygujdsbchdhsbcuhdvcgvdsuchugdvcgvds",
                 transactionId = "3456789oiuyghfvbn".uppercase(),
                 status = Withdraw.Status.APPROVED,
                 updatedAt = Timestamp.now()
@@ -465,5 +468,209 @@ private fun OrderHistoryItemPreview() {
                 )
             }
         }
+    }
+}
+
+@Composable
+fun ModifyDeliveryBoyItem(
+    modifier: Modifier,
+    user: User,
+    isLoading:Boolean,
+    onToggleUserStatus: (user: User) -> Unit,
+    onWithdraw: (user: User) -> Unit,
+    onPenalty: (user: User) -> Unit
+) {
+    ElevatedCard(
+        modifier = modifier,
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                text = user.name.uppercase(),
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center
+            )
+            HorizontalDivider(modifier = Modifier.fillMaxWidth())
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            ) {
+                Column(
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Text(
+                        text = "Phone Number",
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    Spacer(modifier = Modifier.padding(2.dp))
+                    Text(
+                        text = "DL NUmber",
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    Spacer(modifier = Modifier.padding(2.dp))
+                    Text(
+                        text = "Vehicle Number",
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    Spacer(modifier = Modifier.padding(2.dp))
+                    Text(
+                        text = "Order Count",
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    Spacer(modifier = Modifier.padding(2.dp))
+                    Text(
+                        text = "Password",
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    Spacer(modifier = Modifier.padding(2.dp))
+                    Text(
+                        text = "Total Income",
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    Spacer(modifier = Modifier.padding(2.dp))
+                    Text(
+                        text = "Total Penalty",
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    Spacer(modifier = Modifier.padding(2.dp))
+                    Text(
+                        text = "Total Withdrawal",
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+                Column(
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Text(
+                        text = user.phoneNumber.toString(),
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    Spacer(modifier = Modifier.padding(2.dp))
+                    Text(
+                        text = user.drivingLicenceNumber.uppercase(),
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    Spacer(modifier = Modifier.padding(2.dp))
+                    Text(
+                        text = user.vehicleNumber.uppercase(),
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    Spacer(modifier = Modifier.padding(2.dp))
+                    Text(
+                        text = user.orderCount.toString(),
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    Spacer(modifier = Modifier.padding(2.dp))
+                    Text(
+                        text = user.password,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    Spacer(modifier = Modifier.padding(2.dp))
+                    Text(
+                        text = "₹ ${user.totalSalary.round()}",
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    Spacer(modifier = Modifier.padding(2.dp))
+                    Text(
+                        text = "₹ ${user.totalPenalties.round()}",
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    Spacer(modifier = Modifier.padding(2.dp))
+                    Text(
+                        text = "₹ ${user.totalWithdrawal.round()}",
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+            }
+            HorizontalDivider(modifier = Modifier.fillMaxWidth())
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(60.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    modifier = Modifier
+                        .clickable(
+                            enabled = !isLoading
+                        ) {
+                            onToggleUserStatus(user)
+                        },
+                ) {
+                    Image(
+                        modifier = Modifier
+                            .align(Alignment.Center)
+                            .padding(16.dp)
+                            .padding(start = 16.dp),
+                        painter = if (user.status == User.Status.ACTIVE) {
+                            painterResource(R.drawable.activate_user)
+                        } else {
+                            painterResource(R.drawable.deactivate_user)
+                        },
+                        contentDescription = "User Profile",
+                    )
+                }
+
+                Box(
+                    modifier = Modifier
+                        .clickable(
+                            enabled = !isLoading
+                        ) {
+                            onWithdraw(user)
+                        },
+                ) {
+                    Image(
+                        modifier = Modifier
+                            .align(Alignment.Center)
+                            .padding(16.dp),
+                        painter = painterResource(R.drawable.withdrawal),
+                        contentDescription = "User Withdrawal",
+                    )
+                }
+
+                Box(
+                    modifier = Modifier
+                        .clickable(
+                            enabled = !isLoading
+                        ) {
+                            onPenalty(user)
+                        },
+                ) {
+                    Image(
+                        modifier = Modifier
+                            .align(Alignment.Center)
+                            .padding(16.dp)
+                            .padding(end = 16.dp),
+                        painter = painterResource(R.drawable.penalty),
+                        contentDescription = "Penalty",
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+@Preview
+private fun ModifyDeliveryBoyItemPreview() {
+    WithTheme {
+        ModifyDeliveryBoyItem(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 16.dp),
+            user = User(name = "John Doe"),
+            false,
+            {},
+            {},
+            {}
+        )
     }
 }

@@ -1,6 +1,4 @@
-package com.gtech.parcelpro.backend.data.model
-
-import com.gtech.rapidly.features.common.firestore.model.Accounting
+package com.gtech.rapidly.features.common.firestore.model
 
 data class Report(
     val reportDate: String = "", // YYYY-MM-DD

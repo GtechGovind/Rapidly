@@ -1,4 +1,4 @@
-package com.gtech.rapidly.features.domain.user
+package com.gtech.rapidly.features.domain.delivery.screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,7 +20,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
@@ -32,17 +31,14 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.gtech.rapidly.R
-import com.gtech.rapidly.features.common.firestore.model.User
 import com.gtech.rapidly.features.common.ui.components.LoadingButton
 import com.gtech.rapidly.features.common.ui.utils.SubscribeToLifecycle
-import com.gtech.rapidly.features.common.ui.utils.WithTheme
 import com.gtech.rapidly.features.domain.auth.screen.LoginScreen
-import com.gtech.rapidly.features.domain.delivery.screen.FundWithdrawScreen
-import com.gtech.rapidly.features.domain.delivery.viewmodel.MainDeliveryViewModel
+import com.gtech.rapidly.features.domain.delivery.viewmodel.DeliveryBoyProfileViewModel
 import com.gtech.rapidly.features.domain.terms.TermsAndConditionScreen
 import com.gtech.rapidly.utils.convert.round
 
-object UserProfileScreen : Screen {
+object DeliveryBoyProfileScreen : Screen {
 
     private fun readResolve(): Any = TermsAndConditionScreen
     private lateinit var navigator: Navigator
@@ -51,7 +47,7 @@ object UserProfileScreen : Screen {
     override fun Content() {
         navigator = LocalNavigator.currentOrThrow
         val viewModel = rememberScreenModel {
-            UserViewModel(
+            DeliveryBoyProfileViewModel(
                 goToLogin = {
                     navigator.replaceAll(LoginScreen)
                 }
@@ -62,7 +58,7 @@ object UserProfileScreen : Screen {
     }
 
     @Composable
-    fun View(viewModel: UserViewModel) {
+    fun View(viewModel: DeliveryBoyProfileViewModel) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -93,7 +89,7 @@ object UserProfileScreen : Screen {
     @Composable
     private fun ProfileView(
         modifier: Modifier,
-        viewModel: UserViewModel,
+        viewModel: DeliveryBoyProfileViewModel,
     ) {
         ElevatedCard(
             modifier = modifier,
@@ -261,7 +257,7 @@ object UserProfileScreen : Screen {
                     isLoading = viewModel.isLoading,
                     text = "Withdraw Funds",
                 ) {
-                    navigator.push(FundWithdrawScreen)
+                    navigator.push(DeliveryWithdrawScreen)
                 }
 
                 LoadingButton(
@@ -280,20 +276,4 @@ object UserProfileScreen : Screen {
 
     }
 
-}
-
-@Composable
-@Preview
-private fun Preview() {
-    WithTheme {
-        UserProfileScreen.View(UserViewModel {}.apply {
-            user = User(
-                name = "Govind Yadav",
-                totalSalary = 0.0,
-                totalPenalties = 100.0,
-                totalWithdrawal = 500.0,
-                orderCount = 10
-            )
-        })
-    }
 }

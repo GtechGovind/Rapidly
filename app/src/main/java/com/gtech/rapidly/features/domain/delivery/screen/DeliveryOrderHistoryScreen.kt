@@ -21,15 +21,13 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.gtech.rapidly.features.common.firestore.model.Order
-import com.gtech.rapidly.features.common.ui.components.NavBar
 import com.gtech.rapidly.features.common.ui.components.OrderHistoryItem
 import com.gtech.rapidly.features.common.ui.utils.SubscribeToLifecycle
-import com.gtech.rapidly.features.domain.delivery.viewmodel.OrderHistoryViewModel
-import com.gtech.rapidly.features.domain.user.UserProfileScreen
+import com.gtech.rapidly.features.domain.delivery.viewmodel.DeliveryOrderHistoryViewModel
 
-object OrderHistoryScreen : Screen {
+object DeliveryOrderHistoryScreen : Screen {
 
-    private fun readResolve(): Any = OrderHistoryScreen
+    private fun readResolve(): Any = DeliveryOrderHistoryScreen
 
     private lateinit var navigator: Navigator
 
@@ -37,7 +35,7 @@ object OrderHistoryScreen : Screen {
     override fun Content() {
         navigator = LocalNavigator.currentOrThrow
         val viewModel = rememberScreenModel {
-            OrderHistoryViewModel()
+            DeliveryOrderHistoryViewModel()
         }
         SubscribeToLifecycle(viewModel)
         View(viewModel)
@@ -45,7 +43,7 @@ object OrderHistoryScreen : Screen {
 
     @Composable
     private fun View(
-        viewModel: OrderHistoryViewModel
+        viewModel: DeliveryOrderHistoryViewModel
     ) {
 
         Column(

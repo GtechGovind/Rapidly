@@ -74,16 +74,13 @@ fun LoadingImageButton(
     painter: Painter,
     isLoading: Boolean,
 ) {
-    AnimatedVisibility(isLoading) {
-        Box(
-            modifier = modifier,
-        ) {
-            CircularProgressIndicator(
-                modifier = Modifier.align(Alignment.Center)
-            )
-        }
+    Box(
+        modifier = modifier,
+    ) {
+        CircularProgressIndicator(
+            modifier = Modifier.align(Alignment.Center)
+        )
     }
-
     AnimatedVisibility(!isLoading) {
         Image(
             modifier = modifier,

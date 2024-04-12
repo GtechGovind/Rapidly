@@ -1,6 +1,7 @@
 package com.gtech.rapidly.features.common.lifecycle
 
 import android.widget.Toast
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -43,6 +44,40 @@ abstract class ScreenModel : VoyagerScreenMode {
             handleError(e)
         } finally {
             withContext(Dispatchers.Main) { isLoading = false }
+        }
+    }
+
+    suspend fun withLoading(
+        isLoading: MutableState<Boolean>,
+        context: CoroutineContext = Dispatchers.Default,
+        block: suspend () -> Unit
+    ) {
+        withContext(Dispatchers.Main) { isLoading.value = true }
+        try {
+            withContext(context) { block() }
+        } catch (e: Exception) {
+            handleError(e)
+        } finally {
+            withContext(Dispatchers.Main) { isLoading.value = false }
+        }
+    }
+
+    suspend fun withLoading(
+        vararg isLoading: MutableState<Boolean>,
+        context: CoroutineContext = Dispatchers.Default,
+        block: suspend () -> Unit,
+    ) {
+        withContext(Dispatchers.Main) {
+            isLoading.forEach { it.value = true }
+        }
+        try {
+            withContext(context) { block() }
+        } catch (e: Exception) {
+            handleError(e)
+        } finally {
+            withContext(Dispatchers.Main) {
+                isLoading.forEach { it.value = false }
+            }
         }
     }
 

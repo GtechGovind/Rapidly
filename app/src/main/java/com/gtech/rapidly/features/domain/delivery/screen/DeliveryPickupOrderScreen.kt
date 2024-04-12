@@ -65,11 +65,11 @@ import com.gtech.rapidly.features.common.ui.components.LoadingButton
 import com.gtech.rapidly.features.common.ui.utils.SubscribeToLifecycle
 import com.gtech.rapidly.features.common.ui.utils.WithTheme
 import com.gtech.rapidly.features.domain.delivery.service.ImageToTextService
-import com.gtech.rapidly.features.domain.delivery.viewmodel.PickupOrderViewModel
+import com.gtech.rapidly.features.domain.delivery.viewmodel.DeliveryPickupOrderViewModel
 
-object PickupOrderScreen : Screen {
+object DeliveryPickupOrderScreen : Screen {
 
-    private fun readResolve(): Any = PickupOrderScreen
+    private fun readResolve(): Any = DeliveryPickupOrderScreen
 
     private lateinit var navigator: Navigator
 
@@ -77,7 +77,7 @@ object PickupOrderScreen : Screen {
     override fun Content() {
         navigator = LocalNavigator.currentOrThrow
         val viewModel = rememberScreenModel {
-            PickupOrderViewModel(
+            DeliveryPickupOrderViewModel(
                 onBack = {
                     navigator.pop()
                 }
@@ -89,7 +89,7 @@ object PickupOrderScreen : Screen {
 
     @Composable
     fun View(
-        viewModel: PickupOrderViewModel
+        viewModel: DeliveryPickupOrderViewModel
     ) {
 
         Column(
@@ -148,7 +148,7 @@ object PickupOrderScreen : Screen {
     @Composable
     private fun OrderScannerView(
         modifier: Modifier,
-        viewModel: PickupOrderViewModel
+        viewModel: DeliveryPickupOrderViewModel
     ) {
 
         val scannerLauncher = rememberLauncherForActivityResult(
@@ -251,7 +251,7 @@ object PickupOrderScreen : Screen {
     @Composable
     private fun OrderDetails(
         modifier: Modifier,
-        viewModel: PickupOrderViewModel
+        viewModel: DeliveryPickupOrderViewModel
     ) {
         Column(
             modifier = modifier
@@ -331,7 +331,7 @@ object PickupOrderScreen : Screen {
     @Composable
     private fun SelectRestaurant(
         modifier: Modifier,
-        viewModel: PickupOrderViewModel
+        viewModel: DeliveryPickupOrderViewModel
     ) {
 
         var expanded by remember { mutableStateOf(false) }
@@ -378,8 +378,8 @@ object PickupOrderScreen : Screen {
 @Preview
 private fun Preview() {
     WithTheme {
-        PickupOrderScreen.View(
-            viewModel = PickupOrderViewModel(
+        DeliveryPickupOrderScreen.View(
+            viewModel = DeliveryPickupOrderViewModel(
                 onBack = {
 
                 }

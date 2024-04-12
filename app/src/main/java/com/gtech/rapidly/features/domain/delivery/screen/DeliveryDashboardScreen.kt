@@ -94,7 +94,7 @@ object DeliveryDashboardScreen : Screen {
                         painter = painterResource(id = R.drawable.take_order),
                         title = "TAKE NEW ORDER",
                     ) {
-                        navigator.push(PickupOrderScreen)
+                        navigator.push(DeliveryPickupOrderScreen)
                     }
 
                     OptionView(
@@ -105,7 +105,7 @@ object DeliveryDashboardScreen : Screen {
                         painter = painterResource(id = R.drawable.pending_order),
                         title = "PENDING ORDER",
                     ) {
-                        navigator.push(PendingOrderScreen)
+                        navigator.push(DeliveryPendingOrderScreen)
                     }
 
                 }
@@ -126,7 +126,7 @@ object DeliveryDashboardScreen : Screen {
                         painter = painterResource(id = R.drawable.order_history),
                         title = "ORDER HISTORY",
                     ) {
-                        navigator.push(OrderHistoryScreen)
+                        navigator.push(DeliveryOrderHistoryScreen)
                     }
 
                     OptionView(

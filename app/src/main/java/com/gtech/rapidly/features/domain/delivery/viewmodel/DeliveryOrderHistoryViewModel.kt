@@ -10,7 +10,7 @@ import com.gtech.rapidly.utils.misc.RuntimeCache
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class OrderHistoryViewModel: ScreenModel() {
+class DeliveryOrderHistoryViewModel: ScreenModel() {
 
     var orderHistory by mutableStateOf<List<Order>>(emptyList())
 

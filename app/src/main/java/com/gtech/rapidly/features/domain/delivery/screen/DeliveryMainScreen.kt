@@ -30,19 +30,18 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import com.gtech.rapidly.R
 import com.gtech.rapidly.features.common.ui.utils.SubscribeToLifecycle
 import com.gtech.rapidly.features.common.ui.utils.WithTheme
-import com.gtech.rapidly.features.domain.delivery.viewmodel.MainDeliveryViewModel
-import com.gtech.rapidly.features.domain.user.UserProfileScreen
+import com.gtech.rapidly.features.domain.delivery.viewmodel.DeliveryMainViewModel
 import kotlinx.coroutines.runBlocking
 
-object MainDeliveryScreen : Screen {
-    private fun readResolve(): Any = MainDeliveryScreen
+object DeliveryMainScreen : Screen {
+    private fun readResolve(): Any = DeliveryMainScreen
     private lateinit var navigator: Navigator
 
     @Composable
     override fun Content() {
         navigator = LocalNavigator.currentOrThrow
         val viewModel = navigator.rememberNavigatorScreenModel {
-            MainDeliveryViewModel()
+            DeliveryMainViewModel()
         }
         SubscribeToLifecycle(viewModel)
         View(viewModel)
@@ -50,7 +49,7 @@ object MainDeliveryScreen : Screen {
 
     @Composable
     fun View(
-        viewModel: MainDeliveryViewModel
+        viewModel: DeliveryMainViewModel
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -69,7 +68,7 @@ object MainDeliveryScreen : Screen {
     @Composable
     private fun DeliveryNavBar(
         modifier: Modifier,
-        viewModel: MainDeliveryViewModel
+        viewModel: DeliveryMainViewModel
     ) {
         ElevatedCard(
             modifier = modifier,
@@ -95,7 +94,7 @@ object MainDeliveryScreen : Screen {
                         modifier = Modifier
                             .fillMaxHeight()
                             .clickable {
-                                navigator.push(UserProfileScreen)
+                                navigator.push(DeliveryBoyProfileScreen)
                             }
                     ) {
                         Image(
@@ -110,7 +109,7 @@ object MainDeliveryScreen : Screen {
                         modifier = Modifier
                             .fillMaxHeight()
                             .clickable {
-                                navigator.push(FundWithdrawScreen)
+                                navigator.push(DeliveryWithdrawScreen)
                             },
                         viewModel = viewModel
                     )
@@ -122,7 +121,7 @@ object MainDeliveryScreen : Screen {
     @Composable
     private fun NotificationBadge(
         modifier: Modifier,
-        viewModel: MainDeliveryViewModel
+        viewModel: DeliveryMainViewModel
     ) {
         Box(
             modifier = modifier,
@@ -152,8 +151,8 @@ object MainDeliveryScreen : Screen {
 @Preview
 private fun Preview() {
     WithTheme {
-        MainDeliveryScreen.View(
-            MainDeliveryViewModel().apply {
+        DeliveryMainScreen.View(
+            DeliveryMainViewModel().apply {
                 runBlocking {
                     onCreated()
                 }
