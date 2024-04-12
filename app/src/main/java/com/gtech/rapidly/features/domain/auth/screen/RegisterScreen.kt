@@ -40,10 +40,9 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import com.gtech.rapidly.features.common.ui.components.LoadingButton
 import com.gtech.rapidly.features.common.ui.utils.SubscribeToLifecycle
 import com.gtech.rapidly.features.common.ui.utils.WithTheme
-import com.gtech.rapidly.features.domain.admin.screen.AdminDashboardScreen
+import com.gtech.rapidly.features.domain.admin.screen.AdminMainScreen
 import com.gtech.rapidly.features.domain.auth.viewmodel.RegisterViewModel
-import com.gtech.rapidly.features.domain.delivery.screen.DeliveryDashboardScreen
-import com.gtech.rapidly.features.domain.delivery.screen.MainDeliveryScreen
+import com.gtech.rapidly.features.domain.delivery.screen.DeliveryMainScreen
 
 object RegisterScreen : Screen {
 
@@ -56,10 +55,10 @@ object RegisterScreen : Screen {
         val viewModel = rememberScreenModel {
             RegisterViewModel(
                 goToDeliveryDashboard = {
-                    navigator.replaceAll(MainDeliveryScreen)
+                    navigator.replaceAll(DeliveryMainScreen)
                 },
                 goToAdminDashboard = {
-                    navigator.replaceAll(AdminDashboardScreen)
+                    navigator.replaceAll(AdminMainScreen)
                 }
             )
         }

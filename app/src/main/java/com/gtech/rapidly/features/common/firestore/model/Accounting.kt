@@ -6,4 +6,6 @@ data class Accounting(
     var totalCompanyEarning: Double = 0.0,
     var totalCompanyCommission: Double = 0.0,
     var totalDeliveryBoyCommission: Double = 0.0,
+    var totalDeliveryBoyWithdraw: Double = 0.0,
+    var totalDeliveryBoyPenalty: Double = 0.0,
 )

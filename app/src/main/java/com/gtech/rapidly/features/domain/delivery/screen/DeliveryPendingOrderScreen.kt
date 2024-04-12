@@ -29,16 +29,14 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.gtech.rapidly.features.common.firestore.model.Order
-import com.gtech.rapidly.features.common.ui.components.NavBar
 import com.gtech.rapidly.features.common.ui.components.PendingOrderItem
 import com.gtech.rapidly.features.common.ui.utils.SubscribeToLifecycle
 import com.gtech.rapidly.features.common.ui.utils.WithTheme
-import com.gtech.rapidly.features.domain.delivery.viewmodel.PendingOrderViewModel
-import com.gtech.rapidly.features.domain.user.UserProfileScreen
+import com.gtech.rapidly.features.domain.delivery.viewmodel.DeliveryPendingOrderViewModel
 
-object PendingOrderScreen : Screen {
+object DeliveryPendingOrderScreen : Screen {
 
-    private fun readResolve(): Any = PendingOrderScreen
+    private fun readResolve(): Any = DeliveryPendingOrderScreen
 
     private lateinit var navigator: Navigator
 
@@ -46,7 +44,7 @@ object PendingOrderScreen : Screen {
     override fun Content() {
         navigator = LocalNavigator.currentOrThrow
         val viewModel = rememberScreenModel {
-            PendingOrderViewModel()
+            DeliveryPendingOrderViewModel()
         }
         SubscribeToLifecycle(viewModel)
         View(viewModel)
@@ -54,7 +52,7 @@ object PendingOrderScreen : Screen {
 
     @Composable
     private fun View(
-        viewModel: PendingOrderViewModel
+        viewModel: DeliveryPendingOrderViewModel
     ) {
 
         Column(
@@ -146,6 +144,6 @@ object PendingOrderScreen : Screen {
 @Preview
 private fun Preview() {
     WithTheme {
-        PendingOrderScreen.Content()
+        DeliveryPendingOrderScreen.Content()
     }
 }

@@ -1,4 +1,4 @@
-package com.gtech.rapidly.features.domain.user
+package com.gtech.rapidly.features.domain.delivery.viewmodel
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -12,7 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class UserViewModel(
+class DeliveryBoyProfileViewModel(
     private val goToLogin: () -> Unit
 ) : ScreenModel() {
 

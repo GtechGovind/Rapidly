@@ -34,18 +34,18 @@ import com.gtech.rapidly.features.common.ui.components.VisibilityTracker
 import com.gtech.rapidly.features.common.ui.components.WithdrawItem
 import com.gtech.rapidly.features.common.ui.utils.SubscribeToLifecycle
 import com.gtech.rapidly.features.common.ui.utils.WithTheme
-import com.gtech.rapidly.features.domain.delivery.viewmodel.FundWithdrawViewModel
-import com.gtech.rapidly.features.domain.delivery.viewmodel.MainDeliveryViewModel
+import com.gtech.rapidly.features.domain.delivery.viewmodel.DeliveryMainViewModel
+import com.gtech.rapidly.features.domain.delivery.viewmodel.DeliveryWithdrawViewModel
 
-object FundWithdrawScreen : Screen {
-    private fun readResolve(): Any = FundWithdrawScreen
+object DeliveryWithdrawScreen : Screen {
+    private fun readResolve(): Any = DeliveryWithdrawScreen
     private lateinit var navigator: Navigator
 
     @Composable
     override fun Content() {
         navigator = LocalNavigator.currentOrThrow
         val viewModel = rememberScreenModel {
-            FundWithdrawViewModel()
+            DeliveryWithdrawViewModel()
         }
         SubscribeToLifecycle(viewModel)
         View(viewModel)
@@ -53,7 +53,7 @@ object FundWithdrawScreen : Screen {
 
     @Composable
     fun View(
-        viewModel: FundWithdrawViewModel
+        viewModel: DeliveryWithdrawViewModel
     ) {
         Column(
             modifier = Modifier.fillMaxSize()
@@ -79,7 +79,7 @@ object FundWithdrawScreen : Screen {
     @Composable
     private fun SubmitWithdrawRequestView(
         modifier: Modifier,
-        viewModel: FundWithdrawViewModel
+        viewModel: DeliveryWithdrawViewModel
     ) {
         ElevatedCard(
             modifier = modifier
@@ -149,7 +149,7 @@ object FundWithdrawScreen : Screen {
     @Composable
     private fun WithdrawalRequestView(
         modifier: Modifier,
-        viewModel: FundWithdrawViewModel
+        viewModel: DeliveryWithdrawViewModel
     ) {
         OutlinedCard(
             modifier = modifier
@@ -169,7 +169,7 @@ object FundWithdrawScreen : Screen {
                     .fillMaxSize()
             ) {
                 items(
-                    MainDeliveryViewModel.instance?.withdrawals ?: emptyList()
+                    DeliveryMainViewModel.instance?.withdrawals ?: emptyList()
                 ) {
                     if (it.isSeen.not()) {
                         VisibilityTracker(
@@ -203,8 +203,8 @@ object FundWithdrawScreen : Screen {
 @Preview
 private fun Preview() {
     WithTheme {
-        FundWithdrawScreen.View(
-            viewModel = FundWithdrawViewModel().apply {
+        DeliveryWithdrawScreen.View(
+            viewModel = DeliveryWithdrawViewModel().apply {
             }
         )
     }

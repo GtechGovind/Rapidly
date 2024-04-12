@@ -19,10 +19,9 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.gtech.rapidly.features.common.ui.utils.SubscribeToLifecycle
-import com.gtech.rapidly.features.domain.admin.screen.AdminDashboardScreen
+import com.gtech.rapidly.features.domain.admin.screen.AdminMainScreen
 import com.gtech.rapidly.features.domain.auth.screen.LoginScreen
-import com.gtech.rapidly.features.domain.delivery.screen.DeliveryDashboardScreen
-import com.gtech.rapidly.features.domain.delivery.screen.MainDeliveryScreen
+import com.gtech.rapidly.features.domain.delivery.screen.DeliveryMainScreen
 
 class MainScreen : Screen {
 
@@ -31,15 +30,9 @@ class MainScreen : Screen {
         val navigator = LocalNavigator.currentOrThrow
         val viewModel = rememberScreenModel {
             MainViewModel(
-                goToLogin = {
-                    navigator.replaceAll(LoginScreen)
-                },
-                goToDeliveryDashboard = {
-                    navigator.replaceAll(MainDeliveryScreen)
-                },
-                goToAdminDashboard = {
-                    navigator.replaceAll(AdminDashboardScreen)
-                }
+                goToLogin = { navigator.replaceAll(LoginScreen) },
+                goToDeliveryDashboard = { navigator.replaceAll(DeliveryMainScreen) },
+                goToAdminDashboard = { navigator.replaceAll(AdminMainScreen) }
             )
         }
         SubscribeToLifecycle(viewModel)

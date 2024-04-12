@@ -14,6 +14,8 @@ data class User(
     var totalPenalties: Double = 0.0,
     var orderCount: Int = 0,
     var assignedRestaurantId: Long = 0,
+    var permissions: List<Permission> = emptyList(),
+    var upiId: String = "",
     var userType: UserType = UserType.DELIVERY_BOY,
     var status: Status = Status.INACTIVE
 ): Serializable {
@@ -26,6 +28,15 @@ data class User(
     enum class Status {
         ACTIVE,
         INACTIVE
+    }
+
+    enum class Permission {
+        VIEW_COMPANY_STATISTICS,
+        VIEW_DELIVERY_BOY_STATISTICS
+    }
+
+    fun hasPermission(permission: Permission): Boolean {
+        return permissions.contains(permission)
     }
 
 }

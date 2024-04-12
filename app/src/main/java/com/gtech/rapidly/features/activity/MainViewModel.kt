@@ -82,7 +82,10 @@ class MainViewModel(
         }
 
         if (!BuildConfig.DEBUG) {
-            if (BuildConfig.VERSION_NAME != setting.applicationVersion) {
+            if (
+                setting.checkVersion &&
+                BuildConfig.VERSION_NAME != setting.applicationVersion
+            ) {
                 showError("App is outdated, please update the app!")
                 return
             }

@@ -54,15 +54,6 @@ class AdminDashboardViewModel : ScreenModel() {
 
     }
 
-    fun toggleUserStatus(
-        user: User
-    ) = screenModelScope.launch(Dispatchers.IO) {
-        withLoading {
-            if (user.status == User.Status.ACTIVE) user.status = User.Status.INACTIVE
-            else user.status = User.Status.ACTIVE
-            if (!UserService.saveOrUpdate(user)) handleError(Exception("Failed to update user status"))
-            else showMessage("${user.name} status updated successfully")
-        }
-    }
+
 
 }

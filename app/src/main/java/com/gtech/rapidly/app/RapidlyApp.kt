@@ -33,6 +33,7 @@ class RapidlyApp : Application(), ImageLoaderFactory {
             Dexter.withContext(this)
                 .withPermissions(
                     Manifest.permission.POST_NOTIFICATIONS,
+                    Manifest.permission.QUERY_ALL_PACKAGES,
                 ).withListener(object : MultiplePermissionsListener {
                     override fun onPermissionsChecked(report: MultiplePermissionsReport) { }
                     override fun onPermissionRationaleShouldBeShown(

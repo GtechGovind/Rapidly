@@ -12,7 +12,7 @@ import com.gtech.rapidly.utils.misc.RuntimeCache
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class FundWithdrawViewModel : ScreenModel() {
+class DeliveryWithdrawViewModel : ScreenModel() {
 
     var amount by mutableStateOf(TextFieldValue())
     var note by mutableStateOf(TextFieldValue())

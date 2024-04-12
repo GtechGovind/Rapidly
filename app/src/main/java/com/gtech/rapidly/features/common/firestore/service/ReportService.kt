@@ -2,8 +2,8 @@ package com.gtech.rapidly.features.common.firestore.service
 
 import com.gtech.rapidly.features.common.firestore.getAll
 import com.gtech.rapidly.features.common.firestore.getByKey
+import com.gtech.rapidly.features.common.firestore.model.Report
 import com.gtech.rapidly.features.common.firestore.set
-import com.gtech.parcelpro.backend.data.model.Report
 import com.gtech.rapidly.utils.error
 
 object ReportService {

@@ -15,8 +15,8 @@ android {
         applicationId = "com.gtech.rapidly"
         minSdk = 24
         targetSdk = 34
-        versionCode = 8
-        versionName = "2024.1.1.8"
+        versionCode = 9
+        versionName = "2024.1.1.9"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -28,7 +28,7 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = true
+            isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
