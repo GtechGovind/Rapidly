@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
@@ -42,6 +43,7 @@ import com.gtech.rapidly.features.common.ui.theme.RapidlyTheme
 import com.gtech.rapidly.features.common.ui.utils.WithTheme
 import com.gtech.rapidly.utils.convert.round
 import com.gtech.rapidly.utils.misc.GTime
+import com.gtech.rapidly.utils.misc.GTime.diffInMinute
 import com.gtech.rapidly.utils.misc.GTime.toTime
 
 @Composable
@@ -50,7 +52,8 @@ fun PendingOrderItem(
     modifier: Modifier,
     onCallCustomer: (phoneNumber: String) -> Unit,
     onOrderDelivery: (order: Order) -> Unit,
-    onCopyToClipBoard: (text: String) -> Unit
+    onCopyToClipBoard: (text: String) -> Unit,
+    onDeleteOrder: (order: Order) -> Unit
 ) {
 
     OutlinedCard(
@@ -60,8 +63,7 @@ fun PendingOrderItem(
         },
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
+            modifier = Modifier.fillMaxWidth()
         ) {
             Row(
                 modifier = Modifier
@@ -85,7 +87,6 @@ fun PendingOrderItem(
                     fontWeight = FontWeight.Bold
                 )
             }
-            HorizontalDivider(modifier = Modifier.fillMaxWidth())
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -95,48 +96,71 @@ fun PendingOrderItem(
                     modifier = Modifier.weight(1f)
                 ) {
                     Text(
-                        text = "Bill No",
-                        style = MaterialTheme.typography.bodyMedium
+                        text = "Bill No", style = MaterialTheme.typography.bodyMedium
                     )
                     Spacer(modifier = Modifier.padding(2.dp))
                     Text(
-                        text = "Pickup Time",
-                        style = MaterialTheme.typography.bodyMedium
+                        text = "Pickup Time", style = MaterialTheme.typography.bodyMedium
                     )
                     Spacer(modifier = Modifier.padding(2.dp))
                     Text(
-                        text = "Order Status",
-                        style = MaterialTheme.typography.bodyMedium
+                        text = "Order Status", style = MaterialTheme.typography.bodyMedium
                     )
                 }
                 Column(
                     modifier = Modifier.weight(1f)
                 ) {
                     Text(
-                        text = order.billNo,
+                        text = order.billNo, style = MaterialTheme.typography.bodyMedium
+                    )
+                    Spacer(modifier = Modifier.padding(2.dp))
+                    Text(
+                        text = order.pickupTime?.toTime("hh:mm:ss") ?: "NA",
                         style = MaterialTheme.typography.bodyMedium
                     )
                     Spacer(modifier = Modifier.padding(2.dp))
                     Text(
-                        text = GTime.toTime(order.pickupTime, "hh:mm:ss"),
-                        style = MaterialTheme.typography.bodyMedium
+                        text = if (order.pickupTime != null) {
+                            if (order.pickupTime.diffInMinute() < 30) "On Time"
+                            else order.pickupTime.diffInMinute().toString() + " Min Late"
+                        } else "NA", style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+            }
+            ElevatedCard(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RectangleShape,
+                colors = CardColors(
+                    containerColor = MaterialTheme.colorScheme.error,
+                    contentColor = MaterialTheme.colorScheme.onError,
+                    disabledContainerColor = MaterialTheme.colorScheme.secondary,
+                    disabledContentColor = MaterialTheme.colorScheme.onSecondary,
+                ),
+                onClick = { onDeleteOrder(order) }
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(12.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Icon(
+                        modifier = Modifier.size(15.dp),
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = "Delete Order",
                     )
                     Spacer(modifier = Modifier.padding(2.dp))
                     Text(
-                        text = if (GTime.getDiffInMinute(order.pickupTime) < 30) "On Time"
-                        else GTime.getDiffInMinute(order.pickupTime).toString() + " Min Late",
-                        style = MaterialTheme.typography.bodyMedium
+                        text = "Delete Order", fontWeight = FontWeight.Bold
                     )
                 }
             }
             HorizontalDivider(modifier = Modifier.fillMaxWidth())
             Card(
-                modifier = Modifier
-                    .fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 shape = RectangleShape,
-                onClick = {
-                    onCallCustomer(order.customerNumber.toString())
-                }
+                onClick = { onCallCustomer(order.customerNumber.toString()) }
             ) {
                 Row(
                     modifier = Modifier
@@ -152,8 +176,7 @@ fun PendingOrderItem(
                     )
                     Spacer(modifier = Modifier.padding(2.dp))
                     Text(
-                        text = order.customerNumber.toString(),
-                        fontWeight = FontWeight.Bold
+                        text = order.customerNumber.toString(), fontWeight = FontWeight.Bold
                     )
                 }
             }
@@ -163,16 +186,14 @@ fun PendingOrderItem(
 
 @Composable
 fun OrderHistoryItem(
-    order: Order,
-    modifier: Modifier
+    order: Order, modifier: Modifier
 ) {
 
     OutlinedCard(
         modifier = modifier,
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
+            modifier = Modifier.fillMaxWidth()
         ) {
             Row(
                 modifier = Modifier
@@ -203,38 +224,31 @@ fun OrderHistoryItem(
                     modifier = Modifier.weight(1f)
                 ) {
                     Text(
-                        text = "Bill No",
-                        style = MaterialTheme.typography.bodyMedium
+                        text = "Bill No", style = MaterialTheme.typography.bodyMedium
                     )
                     Spacer(modifier = Modifier.padding(2.dp))
                     Text(
-                        text = "Pickup Time",
-                        style = MaterialTheme.typography.bodyMedium
+                        text = "Pickup Time", style = MaterialTheme.typography.bodyMedium
                     )
                     Spacer(modifier = Modifier.padding(2.dp))
                     Text(
-                        text = "Delivered Time",
-                        style = MaterialTheme.typography.bodyMedium
+                        text = "Delivered Time", style = MaterialTheme.typography.bodyMedium
                     )
                     Spacer(modifier = Modifier.padding(2.dp))
                     Text(
-                        text = "Total Time Taken",
-                        style = MaterialTheme.typography.bodyMedium
+                        text = "Total Time Taken", style = MaterialTheme.typography.bodyMedium
                     )
                     Spacer(modifier = Modifier.padding(2.dp))
                     Text(
-                        text = "Customer Number",
-                        style = MaterialTheme.typography.bodyMedium
+                        text = "Customer Number", style = MaterialTheme.typography.bodyMedium
                     )
                     Spacer(modifier = Modifier.padding(2.dp))
                     Text(
-                        text = "Pickup Note",
-                        style = MaterialTheme.typography.bodyMedium
+                        text = "Pickup Note", style = MaterialTheme.typography.bodyMedium
                     )
                     Spacer(modifier = Modifier.padding(2.dp))
                     Text(
-                        text = "Delivery Note",
-                        style = MaterialTheme.typography.bodyMedium
+                        text = "Delivery Note", style = MaterialTheme.typography.bodyMedium
                     )
                 }
 
@@ -242,23 +256,21 @@ fun OrderHistoryItem(
                     modifier = Modifier.weight(1f)
                 ) {
                     Text(
-                        text = order.billNo,
+                        text = order.billNo, style = MaterialTheme.typography.bodyMedium
+                    )
+                    Spacer(modifier = Modifier.padding(2.dp))
+                    Text(
+                        text = order.pickupTime?.toTime("hh:mm:ss") ?: "NA",
                         style = MaterialTheme.typography.bodyMedium
                     )
                     Spacer(modifier = Modifier.padding(2.dp))
                     Text(
-                        text = GTime.toTime(order.pickupTime, "hh:mm:ss"),
+                        text = order.deliveryTime?.toTime("hh:mm:ss") ?: "NA",
                         style = MaterialTheme.typography.bodyMedium
                     )
                     Spacer(modifier = Modifier.padding(2.dp))
                     Text(
-                        text = GTime.toTime(order.deliveryTime, "hh:mm:ss"),
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                    Spacer(modifier = Modifier.padding(2.dp))
-                    Text(
-                        text = GTime.diffInMinute(order.deliveryTime, order.pickupTime)
-                            .toString() + " Min",
+                        text = order.pickupTime?.diffInMinute().toString() + " Min",
                         style = MaterialTheme.typography.bodyMedium
                     )
                     Spacer(modifier = Modifier.padding(2.dp))
@@ -268,13 +280,11 @@ fun OrderHistoryItem(
                     )
                     Spacer(modifier = Modifier.padding(2.dp))
                     Text(
-                        text = order.pickupNote,
-                        style = MaterialTheme.typography.bodyMedium
+                        text = order.pickupNote, style = MaterialTheme.typography.bodyMedium
                     )
                     Spacer(modifier = Modifier.padding(2.dp))
                     Text(
-                        text = order.deliveryNote,
-                        style = MaterialTheme.typography.bodyMedium
+                        text = order.deliveryNote, style = MaterialTheme.typography.bodyMedium
                     )
                 }
             }
@@ -284,8 +294,7 @@ fun OrderHistoryItem(
 
 @Composable
 fun WithdrawItem(
-    modifier: Modifier,
-    item: Withdraw
+    modifier: Modifier, item: Withdraw
 ) {
     ElevatedCard(
         modifier = modifier,
@@ -336,8 +345,7 @@ fun WithdrawItem(
 
             Spacer(modifier = Modifier.padding(8.dp))
             Card(
-                modifier = Modifier
-                    .fillMaxWidth(.8f),
+                modifier = Modifier.fillMaxWidth(.8f),
                 shape = MaterialTheme.shapes.medium,
                 colors = CardColors(
                     containerColor = MaterialTheme.colorScheme.secondary,
@@ -396,8 +404,7 @@ private fun WithdrawItemPreview() {
         WithdrawItem(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
-            item = Withdraw(
+                .padding(16.dp), item = Withdraw(
                 requestAmount = 100.0,
                 requestNote = "Test",
                 attendedBy = 2345678,
@@ -415,31 +422,23 @@ private fun WithdrawItemPreview() {
 private fun PendingOrderItemPreview() {
     RapidlyTheme {
         Scaffold(
-            modifier = Modifier
-                .fillMaxSize()
+            modifier = Modifier.fillMaxSize()
         ) {
             Box(
-                modifier = Modifier
-                    .padding(it)
+                modifier = Modifier.padding(it)
             ) {
-                PendingOrderItem(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    order = Order(
-                        orderId = "SDFGHJKJHGFGHJKLKJHGFDFGH",
-                        customerNumber = 1234567890,
-                    ),
-                    onCallCustomer = {
+                PendingOrderItem(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp), order = Order(
+                    orderId = "SDFGHJKJHGFGHJKLKJHGFDFGH",
+                    customerNumber = 1234567890,
+                ), onCallCustomer = {
 
-                    },
-                    onOrderDelivery = {
+                }, onOrderDelivery = {
 
-                    },
-                    onCopyToClipBoard = {
+                }, onCopyToClipBoard = {
 
-                    }
-                )
+                }, onDeleteOrder = {})
             }
         }
     }
@@ -450,18 +449,15 @@ private fun PendingOrderItemPreview() {
 private fun OrderHistoryItemPreview() {
     RapidlyTheme {
         Scaffold(
-            modifier = Modifier
-                .fillMaxSize()
+            modifier = Modifier.fillMaxSize()
         ) {
             Box(
-                modifier = Modifier
-                    .padding(it)
+                modifier = Modifier.padding(it)
             ) {
                 OrderHistoryItem(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp),
-                    order = Order(
+                        .padding(16.dp), order = Order(
                         orderId = "SDFGHJKJHGFGHJKLKJHGFDFGH",
                         customerNumber = 1234567890,
                     )
@@ -475,7 +471,7 @@ private fun OrderHistoryItemPreview() {
 fun ModifyDeliveryBoyItem(
     modifier: Modifier,
     user: User,
-    isLoading:Boolean,
+    isLoading: Boolean,
     onToggleUserStatus: (user: User) -> Unit,
     onWithdraw: (user: User) -> Unit,
     onPenalty: (user: User) -> Unit
@@ -484,8 +480,7 @@ fun ModifyDeliveryBoyItem(
         modifier = modifier,
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
+            modifier = Modifier.fillMaxWidth()
         ) {
             Text(
                 modifier = Modifier
@@ -506,43 +501,35 @@ fun ModifyDeliveryBoyItem(
                     modifier = Modifier.weight(1f)
                 ) {
                     Text(
-                        text = "Phone Number",
-                        style = MaterialTheme.typography.bodyMedium
+                        text = "Phone Number", style = MaterialTheme.typography.bodyMedium
                     )
                     Spacer(modifier = Modifier.padding(2.dp))
                     Text(
-                        text = "DL NUmber",
-                        style = MaterialTheme.typography.bodyMedium
+                        text = "DL NUmber", style = MaterialTheme.typography.bodyMedium
                     )
                     Spacer(modifier = Modifier.padding(2.dp))
                     Text(
-                        text = "Vehicle Number",
-                        style = MaterialTheme.typography.bodyMedium
+                        text = "Vehicle Number", style = MaterialTheme.typography.bodyMedium
                     )
                     Spacer(modifier = Modifier.padding(2.dp))
                     Text(
-                        text = "Order Count",
-                        style = MaterialTheme.typography.bodyMedium
+                        text = "Order Count", style = MaterialTheme.typography.bodyMedium
                     )
                     Spacer(modifier = Modifier.padding(2.dp))
                     Text(
-                        text = "Password",
-                        style = MaterialTheme.typography.bodyMedium
+                        text = "Password", style = MaterialTheme.typography.bodyMedium
                     )
                     Spacer(modifier = Modifier.padding(2.dp))
                     Text(
-                        text = "Total Income",
-                        style = MaterialTheme.typography.bodyMedium
+                        text = "Total Income", style = MaterialTheme.typography.bodyMedium
                     )
                     Spacer(modifier = Modifier.padding(2.dp))
                     Text(
-                        text = "Total Penalty",
-                        style = MaterialTheme.typography.bodyMedium
+                        text = "Total Penalty", style = MaterialTheme.typography.bodyMedium
                     )
                     Spacer(modifier = Modifier.padding(2.dp))
                     Text(
-                        text = "Total Withdrawal",
-                        style = MaterialTheme.typography.bodyMedium
+                        text = "Total Withdrawal", style = MaterialTheme.typography.bodyMedium
                     )
                 }
                 Column(
@@ -569,8 +556,7 @@ fun ModifyDeliveryBoyItem(
                     )
                     Spacer(modifier = Modifier.padding(2.dp))
                     Text(
-                        text = user.password,
-                        style = MaterialTheme.typography.bodyMedium
+                        text = user.password, style = MaterialTheme.typography.bodyMedium
                     )
                     Spacer(modifier = Modifier.padding(2.dp))
                     Text(
@@ -598,12 +584,11 @@ fun ModifyDeliveryBoyItem(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Box(
-                    modifier = Modifier
-                        .clickable(
-                            enabled = !isLoading
-                        ) {
-                            onToggleUserStatus(user)
-                        },
+                    modifier = Modifier.clickable(
+                        enabled = !isLoading
+                    ) {
+                        onToggleUserStatus(user)
+                    },
                 ) {
                     Image(
                         modifier = Modifier
@@ -620,12 +605,11 @@ fun ModifyDeliveryBoyItem(
                 }
 
                 Box(
-                    modifier = Modifier
-                        .clickable(
-                            enabled = !isLoading
-                        ) {
-                            onWithdraw(user)
-                        },
+                    modifier = Modifier.clickable(
+                        enabled = !isLoading
+                    ) {
+                        onWithdraw(user)
+                    },
                 ) {
                     Image(
                         modifier = Modifier
@@ -637,12 +621,11 @@ fun ModifyDeliveryBoyItem(
                 }
 
                 Box(
-                    modifier = Modifier
-                        .clickable(
-                            enabled = !isLoading
-                        ) {
-                            onPenalty(user)
-                        },
+                    modifier = Modifier.clickable(
+                        enabled = !isLoading
+                    ) {
+                        onPenalty(user)
+                    },
                 ) {
                     Image(
                         modifier = Modifier
@@ -662,15 +645,13 @@ fun ModifyDeliveryBoyItem(
 @Preview
 private fun ModifyDeliveryBoyItemPreview() {
     WithTheme {
-        ModifyDeliveryBoyItem(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 16.dp),
+        ModifyDeliveryBoyItem(modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 16.dp),
             user = User(name = "John Doe"),
             false,
             {},
             {},
-            {}
-        )
+            {})
     }
 }

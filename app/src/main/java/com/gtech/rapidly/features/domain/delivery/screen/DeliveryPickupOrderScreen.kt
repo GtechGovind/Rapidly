@@ -23,6 +23,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Create
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ElevatedCard
@@ -319,6 +320,26 @@ object DeliveryPickupOrderScreen : Screen {
                 },
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Phone,
+                    imeAction = ImeAction.Next
+                )
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            OutlinedTextField(
+                modifier = Modifier.fillMaxWidth(),
+                value = viewModel.pickupNode,
+                onValueChange = { viewModel.pickupNode = it },
+                enabled = !viewModel.isLoading,
+                label = { Text("Pickup Node") },
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Info,
+                        contentDescription = "Pickup Node"
+                    )
+                },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text,
                     imeAction = ImeAction.Done
                 )
             )

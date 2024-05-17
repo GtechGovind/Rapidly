@@ -51,7 +51,7 @@ object DeliveryPendingOrderScreen : Screen {
     }
 
     @Composable
-    private fun View(
+    fun View(
         viewModel: DeliveryPendingOrderViewModel
     ) {
 
@@ -70,7 +70,8 @@ object DeliveryPendingOrderScreen : Screen {
                 PendingOrderView(
                     modifier = Modifier
                         .fillMaxSize(),
-                    pendingOrders = viewModel.pendingOrders
+                    pendingOrders = viewModel.pendingOrders,
+                    viewModel = viewModel
                 )
             }
         }
@@ -79,7 +80,8 @@ object DeliveryPendingOrderScreen : Screen {
     @Composable
     private fun PendingOrderView(
         modifier: Modifier,
-        pendingOrders: List<Order>
+        pendingOrders: List<Order>,
+        viewModel: DeliveryPendingOrderViewModel
     ) {
 
         val context = LocalContext.current
@@ -131,6 +133,9 @@ object DeliveryPendingOrderScreen : Screen {
                                     order.orderId
                                 )
                             )
+                        },
+                        onDeleteOrder = {
+                            viewModel.deleteOrder(order)
                         }
                     )
                 }
@@ -144,6 +149,30 @@ object DeliveryPendingOrderScreen : Screen {
 @Preview
 private fun Preview() {
     WithTheme {
-        DeliveryPendingOrderScreen.Content()
+        DeliveryPendingOrderScreen.View(
+            DeliveryPendingOrderViewModel().apply {
+                pendingOrders = listOf(
+                    Order(
+                        orderId = "123456",
+                        billNo = "123456",
+                        billNoHash = "123456",
+                        billAmount = 123.0,
+                        restaurantId = 123,
+                        deliveryNote = "Delivery Note",
+                        pickupNote = "Pickup Note",
+                        deliveryBoyNumber = 123,
+                        pickupTime = null,
+                        deliveryTime = null,
+                        pickupLocation = 123,
+                        deliveryLocation = 123,
+                        customerNumber = 123,
+                        orderStatus = Order.Status.PICKUP,
+                        scannedText = "Scanned Text",
+                        createdAt = com.google.firebase.Timestamp.now(),
+                        updatedAt = null
+                    )
+                )
+            }
+        )
     }
 }

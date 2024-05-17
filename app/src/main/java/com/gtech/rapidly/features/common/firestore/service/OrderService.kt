@@ -32,6 +32,20 @@ object OrderService {
         }
     }
 
+    suspend fun delete(order: Order): Boolean {
+        return try {
+            val db = FirebaseFirestore.getInstance()
+            db.collection(COLLECTION_NAME)
+                .document(order.orderId)
+                .delete()
+                .await()
+            true
+        } catch (e: Exception) {
+            error(e)
+            false
+        }
+    }
+
     suspend fun getByOrderId(orderId: String): Order? {
         return try {
             getByKey(COLLECTION_NAME, orderId)
@@ -56,7 +70,11 @@ object OrderService {
         }
     }
 
-    suspend fun getByStatus(status: Order.Status, deliverBoyNumber: Long, limit: Long = 100): MutableList<Order> {
+    suspend fun getByStatus(
+        status: Order.Status,
+        deliverBoyNumber: Long,
+        limit: Long = 100
+    ): MutableList<Order> {
 
         // GET DB INSTANCE
         val db = FirebaseFirestore.getInstance()

@@ -27,6 +27,13 @@ object GTime {
         return minutes.toInt()
     }
 
+    fun Timestamp.diffInMinute(): Int {
+        val currentTimeMillis = System.currentTimeMillis()
+        val diffMillis = currentTimeMillis - this.seconds * 1000
+        val minutes = TimeUnit.MILLISECONDS.toMinutes(diffMillis)
+        return minutes.toInt()
+    }
+
     fun diffInMinute(one: Long, two: Long): Int {
         val diffMillis = one - two
         val minutes = TimeUnit.MILLISECONDS.toMinutes(diffMillis)

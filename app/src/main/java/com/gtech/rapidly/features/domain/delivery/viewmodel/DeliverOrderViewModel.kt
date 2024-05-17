@@ -1,5 +1,9 @@
 package com.gtech.rapidly.features.domain.delivery.viewmodel
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.text.input.TextFieldValue
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
@@ -21,6 +25,8 @@ class DeliverOrderViewModel(
     private val order: Order,
     private val goBack: () -> Unit
 ) : ScreenModel() {
+
+    var deliveryNote by mutableStateOf(TextFieldValue())
 
     fun deliverOrder() = screenModelScope.launch(
         Dispatchers.IO
@@ -59,7 +65,7 @@ class DeliverOrderViewModel(
         // UPDATE ORDER
         order.orderStatus = Order.Status.DELIVERED
         order.updatedAt = Timestamp.now()
-        order.deliveryTime = System.currentTimeMillis()
+        order.deliveryTime = Timestamp.now()
 
         // UPDATE USER
         user.totalSalary += deliveryBoyCommission

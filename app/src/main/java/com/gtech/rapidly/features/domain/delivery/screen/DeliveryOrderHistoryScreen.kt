@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
@@ -23,6 +24,7 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import com.gtech.rapidly.features.common.firestore.model.Order
 import com.gtech.rapidly.features.common.ui.components.OrderHistoryItem
 import com.gtech.rapidly.features.common.ui.utils.SubscribeToLifecycle
+import com.gtech.rapidly.features.common.ui.utils.WithTheme
 import com.gtech.rapidly.features.domain.delivery.viewmodel.DeliveryOrderHistoryViewModel
 
 object DeliveryOrderHistoryScreen : Screen {
@@ -42,7 +44,7 @@ object DeliveryOrderHistoryScreen : Screen {
     }
 
     @Composable
-    private fun View(
+    fun View(
         viewModel: DeliveryOrderHistoryViewModel
     ) {
 
@@ -58,7 +60,7 @@ object DeliveryOrderHistoryScreen : Screen {
                     )
                 }
             } else {
-                PendingOrderView(
+                OrderHistoryView(
                     modifier = Modifier
                         .fillMaxSize(),
                     pendingOrders = viewModel.orderHistory
@@ -68,7 +70,7 @@ object DeliveryOrderHistoryScreen : Screen {
     }
 
     @Composable
-    private fun PendingOrderView(
+    private fun OrderHistoryView(
         modifier: Modifier,
         pendingOrders: List<Order>
     ) {
@@ -101,4 +103,37 @@ object DeliveryOrderHistoryScreen : Screen {
         }
     }
 
+}
+
+@Composable
+@Preview
+private fun Preview() {
+    WithTheme {
+        DeliveryOrderHistoryScreen.View(
+            viewModel = DeliveryOrderHistoryViewModel()
+                .apply {
+                    orderHistory = listOf(
+                        Order(
+                            orderId = "123456",
+                            billNo = "123456",
+                            billNoHash = "123456",
+                            billAmount = 123.0,
+                            restaurantId = 123,
+                            deliveryNote = "Delivery Note",
+                            pickupNote = "Pickup Note",
+                            deliveryBoyNumber = 123,
+                            pickupTime = null,
+                            deliveryTime = null,
+                            pickupLocation = 123,
+                            deliveryLocation = 123,
+                            customerNumber = 123,
+                            orderStatus = Order.Status.PICKUP,
+                            scannedText = "Scanned Text",
+                            createdAt = com.google.firebase.Timestamp.now(),
+                            updatedAt = null
+                        )
+                    )
+                }
+        )
+    }
 }

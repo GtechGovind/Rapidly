@@ -14,7 +14,6 @@ import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 
-
 class RapidlyApp : Application(), ImageLoaderFactory {
 
     companion object {
@@ -37,10 +36,10 @@ class RapidlyApp : Application(), ImageLoaderFactory {
                 ).withListener(object : MultiplePermissionsListener {
                     override fun onPermissionsChecked(report: MultiplePermissionsReport) { }
                     override fun onPermissionRationaleShouldBeShown(
-                        permissions: List<PermissionRequest?>?,
-                        token: PermissionToken?
+                        permissions: List<PermissionRequest>,
+                        token: PermissionToken
                     ) {
-                        token?.continuePermissionRequest()
+                        token.continuePermissionRequest()
                     }
                 }).check()
         }

@@ -27,7 +27,8 @@ class DeliveryPickupOrderViewModel(
     var billNumber by mutableStateOf(TextFieldValue())
     var amount by mutableStateOf(TextFieldValue())
     var customerNumber by mutableStateOf(TextFieldValue())
-    var scannedText by mutableStateOf("")
+    var pickupNode by mutableStateOf(TextFieldValue())
+    private var scannedText by mutableStateOf("")
 
     override suspend fun onCreated() {
         super.onCreated()
@@ -90,7 +91,12 @@ class DeliveryPickupOrderViewModel(
             return null
         }
 
-        if (amount.isEmpty()) {
+        if (
+            amount.isEmpty() ||
+            amount.toDoubleOrNull() == null ||
+            amount.toDouble() <= 0.0 ||
+            amount.toDouble() > 20000.0
+        ) {
             showMessage("Please enter amount")
             return null
         }
@@ -125,9 +131,9 @@ class DeliveryPickupOrderViewModel(
             billAmount = amount.toDouble(),
             restaurantId = restaurant.id,
             deliveryNote = "",
-            pickupNote = "",
+            pickupNote = pickupNode.text,
             deliveryBoyNumber = user.phoneNumber,
-            pickupTime = System.currentTimeMillis(),
+            pickupTime = Timestamp.now(),
             customerNumber = customerNumber.toLong(),
             orderStatus = Order.Status.PICKUP,
             scannedText = scannedText,
