@@ -15,8 +15,8 @@ android {
         applicationId = "com.gtech.rapidly"
         minSdk = 24
         targetSdk = 34
-        versionCode = 9
-        versionName = "2024.1.1.9"
+        versionCode = 10
+        versionName = "2024.1.2.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
