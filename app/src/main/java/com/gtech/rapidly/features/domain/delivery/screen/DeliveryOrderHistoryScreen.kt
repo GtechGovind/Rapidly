@@ -36,7 +36,7 @@ object DeliveryOrderHistoryScreen : Screen {
     @Composable
     override fun Content() {
         navigator = LocalNavigator.currentOrThrow
-        val viewModel = rememberScreenModel {
+        val viewModel = rememberScreenModel { 
             DeliveryOrderHistoryViewModel()
         }
         SubscribeToLifecycle(viewModel)
