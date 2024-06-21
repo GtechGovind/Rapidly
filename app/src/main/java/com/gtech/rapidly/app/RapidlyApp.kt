@@ -8,11 +8,13 @@ import coil.ImageLoaderFactory
 import coil.disk.DiskCache
 import coil.memory.MemoryCache
 import coil.util.DebugLogger
+import com.gtech.rapidly.utils.misc.RuntimeCache
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
+import kotlinx.coroutines.runBlocking
 
 class RapidlyApp : Application(), ImageLoaderFactory {
 
@@ -24,6 +26,7 @@ class RapidlyApp : Application(), ImageLoaderFactory {
     override fun onCreate() {
         super.onCreate()
         instance = this
+        runBlocking { RuntimeCache.initResources() }
         processPermission()
     }
 

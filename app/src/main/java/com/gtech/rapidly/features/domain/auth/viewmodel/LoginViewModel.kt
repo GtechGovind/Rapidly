@@ -1,7 +1,9 @@
 package com.gtech.rapidly.features.domain.auth.viewmodel
 
 import cafe.adriel.voyager.core.model.screenModelScope
+import com.gtech.rapidly.BuildConfig
 import com.gtech.rapidly.features.common.firestore.model.User
+import com.gtech.rapidly.features.common.firestore.service.SettingsService
 import com.gtech.rapidly.features.common.firestore.service.UserService
 import com.gtech.rapidly.features.common.lifecycle.ScreenModel
 import kotlinx.coroutines.Dispatchers
@@ -59,6 +61,7 @@ class LoginViewModel(
             return null
         }
 
+
         val user = UserService.getUserByPhoneNumber(phoneNumber)
         if (user == null) {
             showMessage("User not found, please register first")
@@ -68,6 +71,27 @@ class LoginViewModel(
         if (user.password != password) {
             showMessage("Password did not match, please try again")
             return null
+        }
+
+        if (user.status != User.Status.ACTIVE) {
+            showMessage("User account is not active, please contact admin!")
+            return null
+        }
+
+        val setting = SettingsService.getSetting()
+        if (setting == null) {
+            showMessage("Failed to load settings, please try again!")
+            return null
+        }
+
+        if (!BuildConfig.DEBUG) {
+            if (
+                setting.checkVersion &&
+                BuildConfig.VERSION_NAME != setting.applicationVersion
+            ) {
+                showMessage("App is outdated, please update the app!")
+                return null
+            }
         }
 
         return user
